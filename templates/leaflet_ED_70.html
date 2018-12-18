@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+
+{% block content_index %}
+  <div id="content-wrapper">
+
+    <div class="container-fluid">
+
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Maps</li>
+      </ol>
+
+      <!-- Area Chart Example-->
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fas fa-chart-area"></i>
+          Leaflet Maps ED_70</div>
+        <div class="card-body">
+          <style>
+          #map {
+            width: 100%;
+            height: 580px;
+            box-shadow: 5px 5px 5px #888;
+          }
+          </style>
+          <div id = 'map'></div>
+          <script>
+            var map = L.map('map').setView([40.45480,-3.7287],15);
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',maxZoom: 18}).addTo(map);
+            L.control.scale().addTo(map);
+            L.marker([40.45480,-3.7287],{draggable: true}).addTo(map)
+          </script>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+
+
+      <p class="small text-center text-muted my-5">
+        <em>More chart examples coming soon...</em>
+      </p>
+
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright © Your Website 2018</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+{% endblock %}
