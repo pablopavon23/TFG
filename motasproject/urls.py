@@ -15,34 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from motas import views
 from motasproject import settings
+import motas.views as motas_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'motas.views.user_login'),
-    url(r'^register', 'motas.views.register'),
-    url(r'^(.*)/index', 'motas.views.index'),
-    url(r'^(.*)/slices', 'motas.views.slices'),
-    url(r'^(.*)/tables', 'motas.views.tables'),
-    url(r'^(.*)/leaflet_ED70', 'motas.views.leaflet'),
-    url(r'^(.*)/leaflet_CF', 'motas.views.leaflet'),
-    url(r'^(.*)/leaflet_Alm', 'motas.views.leaflet'),
-    url(r'^(.*)/maps', 'motas.views.maps'),
+    url(r'^$', motas_views.user_login, name='Login'),
+    url(r'^register', motas_views.register, name='Registrarse'),
+    url(r'^(.*)/index', motas_views.index, name='Página principal'),
+    url(r'^(.*)/logout', motas_views.user_logout, name='Logout'),
+    url(r'^(.*)/slices', motas_views.slices, name='Graficas'),
+    url(r'^(.*)/tables', motas_views.tables, name='Datos'),
+    url(r'^(.*)/leaflet', motas_views.leaflet, name='Leaflet'),
+    url(r'^(.*)/maps', motas_views.maps, name='Mapas'),
 ]
-
-"""
-import motas.views as motas_views
-
-    url(r'^change.css/', aparca_views.personalizar, name='Personalizar css'),
-    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_URL}),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', aparca_views.pagina_principal, name='Página principal'),
-    url(r'^login' , aparca_views.loginuser, name='Loguearse'),
-    url(r'^logout', aparca_views.mylogout, name='Logout'),
-    url(r'^aparcamientos/$', aparca_views.aparcamientos, name='Aparcamientos'),
-    url(r'^aparcamientos/(.*)', aparca_views.aparcamientos_id, name='Aparcamiento concreto'),
-    url(r'^about/', aparca_views.about, name='Ayuda'),
-    url(r'^(.*)/xml/', aparca_views.usuarios_xml, name='Pagina XML de un usuario'),
-    url(r'^(.*)/$', aparca_views.usuarios, name='Pagina personal de un usuario'),
-"""
