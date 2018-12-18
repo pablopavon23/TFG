@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Motas - Maps</title>
+    <title>Motas - Slices</title>
 
     <!-- Add a favicon-->
     <link rel="shortcut icon" href="{% static 'img/favicon.jpg' %}" type="image/icon" />
@@ -25,10 +25,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'startbootstrap-sb-admin/css/sb-admin.css' %}" rel="stylesheet">
-
-    <!-- Necessary to Leaflet-->
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
 
   </head>
 
@@ -100,36 +96,37 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="index">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
         </li>
+        <!--li class="nav-item">
+          <a class="nav-link" href="slices">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Slices</span></a>
+        </li-->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
+          <a class="nav-link dropdown-toggle" href="#" id="slicesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Tables</span>
           </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            <h6 class="dropdown-header">Login Screens:</h6>
-            <a class="dropdown-item" href="login.html">Login</a>
-            <a class="dropdown-item" href="register.html">Register</a>
-            <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Other Pages:</h6>
-            <a class="dropdown-item" href="404.html">404 Page</a>
-            <a class="dropdown-item" href="blank.html">Blank Page</a>
+          <div class="dropdown-menu" aria-labelledby="slicesDropdown">
+            <a class="dropdown-item" href="#">ED_70</a>
+            <a class="dropdown-item" href="#">Clínica Fuenlabrada</a>
+            <a class="dropdown-item" href="#">Almeria</a>
           </div>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="tables.html">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+            <span>Tables</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <a class="dropdown-item" href="#">ED_70</a>
+            <a class="dropdown-item" href="#">Clínica Fuenlabrada</a>
+            <a class="dropdown-item" href="#">Almeria</a>
+          </div>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -137,9 +134,9 @@
             <span>Maps</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="mapsDropdown">
-            <a class="dropdown-item" href="maps.html">ED_70</a>
-            <a class="dropdown-item" href="maps.html">Clínica Fuenlabrada</a>
-            <a class="dropdown-item" href="maps.html">Almeria</a>
+            <a class="dropdown-item" href="leaflet_ED70.html">ED_70</a>
+            <a class="dropdown-item" href="leaflet_CF.html">Clínica Fuenlabrada</a>
+            <a class="dropdown-item" href="leaflet_Alm.html">Almeria</a>
           </div>
         </li>
       </ul>
@@ -153,35 +150,14 @@
             <li class="breadcrumb-item">
               <a href="#">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Maps</li>
+            <li class="breadcrumb-item active">Slices</li>
           </ol>
 
-          <!-- Area Chart Example-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fas fa-chart-area"></i>
-              Leaflet Maps ED_70</div>
-            <div class="card-body">
-              <style>
-              #map {
-                width: 100%;
-                height: 580px;
-                box-shadow: 5px 5px 5px #888;
-              }
-              </style>
-              <div id = 'map'></div>
-              <script>
-                var map = L.map('map').setView([40.45480,-3.7287],15);
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',maxZoom: 18}).addTo(map);
-                L.control.scale().addTo(map);
-                L.marker([40.45480,-3.7287],{draggable: true}).addTo(map)
-                  .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-                  .openPopup();
-              </script>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-          </div>
-
+          <iframe src="http://chorlito.tsc.urjc.es:8088/superset/explore/table/7/?goto_dash=false&force=false&new_dashboard_name=&slice_name=ED70_1_tmp-aire&y_axis_zero=y&y_axis_zero=false&y_axis_label=&resample_fillmethod=ffill&save_to_dashboard_id=&line_interpolation=linear&add_to_dash=false&show_legend=y&show_legend=false&rolling_periods=&granularity_sqla=hora&x_axis_label=&rolling_type=None&datasource_type=table&new_slice_name=&flt_op_1=in&flt_op_0=in&viz_type=line&show_markers=false&since=1+day+ago&y_log_scale=false&time_compare=&rdo_save=overwrite&until=now&collapsed_fieldsets=&resample_rule=1T&datasource_id=7&period_ratio_type=growth&show_brush=false&y_axis_format=.3s&x_axis_showminmax=y&x_axis_showminmax=false&metrics=max__medida&flt_eq_0=&flt_eq_1=TMP-aire+%28c%29&flt_col_1=tipo_medida&flt_col_0=&timeseries_limit_metric=&resample_how=median&standalone=true&where=&num_period_compare=&userid=1&previous_viz_type=line&groupby=id_mota&rich_tooltip=y&rich_tooltip=false&limit=500&x_axis_format=%25H%3A%25M%3A%25S&datasource_name=ED70_1_medidas&contribution=false&time_grain_sqla=minute&having="
+          width="600"
+          height="400"
+          seamless frameBorder="0" scrolling="no">
+          </iframe>
 
           <p class="small text-center text-muted my-5">
             <em>More chart examples coming soon...</em>
