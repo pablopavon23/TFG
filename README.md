@@ -7,4 +7,5 @@ Versión2 - V.17/12/2018: Aplicación en la que ya se puede loguear a los usuari
 
 Versión3 - V.18/12/2018: Re ordenación de las plantillas para mostrarlas de un modo más eficaz.
                          Hacer las plantillas leaflet como extensiones de otras plantillas.
-                         Los items de los menus de slices,tables y slices hechos dinámicos. 
+                         Los items de los menus de slices,tables y slices hechos dinámicos.
+                         Ajuste parcial del iframe para importar las slices.
