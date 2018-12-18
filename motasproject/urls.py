@@ -16,16 +16,33 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from motas import views
-
+from motasproject import settings
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'motas.views.login'),
+    url(r'^$', 'motas.views.user_login'),
     url(r'^register', 'motas.views.register'),
-    url(r'^index', 'motas.views.index'),
-    url(r'^forgot_password', 'motas.views.forgot_password'),
-    url(r'^charts', 'motas.views.charts'),
-    url(r'^tables', 'motas.views.tables'),
-    url(r'^leaflet', 'motas.views.leaflet'),
-    url(r'^maps', 'motas.views.maps'),
+    url(r'^(.*)/index', 'motas.views.index'),
+    url(r'^(.*)/slices', 'motas.views.slices'),
+    url(r'^(.*)/tables', 'motas.views.tables'),
+    url(r'^(.*)/leaflet_ED70', 'motas.views.leaflet'),
+    url(r'^(.*)/leaflet_CF', 'motas.views.leaflet'),
+    url(r'^(.*)/leaflet_Alm', 'motas.views.leaflet'),
+    url(r'^(.*)/maps', 'motas.views.maps'),
 ]
+
+"""
+import motas.views as motas_views
+
+    url(r'^change.css/', aparca_views.personalizar, name='Personalizar css'),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_URL}),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', aparca_views.pagina_principal, name='Página principal'),
+    url(r'^login' , aparca_views.loginuser, name='Loguearse'),
+    url(r'^logout', aparca_views.mylogout, name='Logout'),
+    url(r'^aparcamientos/$', aparca_views.aparcamientos, name='Aparcamientos'),
+    url(r'^aparcamientos/(.*)', aparca_views.aparcamientos_id, name='Aparcamiento concreto'),
+    url(r'^about/', aparca_views.about, name='Ayuda'),
+    url(r'^(.*)/xml/', aparca_views.usuarios_xml, name='Pagina XML de un usuario'),
+    url(r'^(.*)/$', aparca_views.usuarios, name='Pagina personal de un usuario'),
+"""
