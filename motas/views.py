@@ -11,8 +11,8 @@ from django.template.context_processors import csrf
 from django.contrib.auth import logout, authenticate, login
 # Importamos los modelos:
 from .models import *
-# Importamos el parseador:
-# from .parser_SQL import parser_function
+# Importamos el lector de la SQL:
+# from .parser_SQL import executeScriptsFromFile
 
 # Create your views here.
 
@@ -25,27 +25,6 @@ def users_pages(user):
         pages = ['Clinica_Fuenlabrada']
 
     return pages
-
-# ------------------------------------------------------------------------------
-# Funcion que me devuelve el contexto con los dropdown-item que va a tener cada opcion para maps, slices y tables
-def user_items(user):
-    # Obtengo la lista de paginas a las que ese usuario tiene informacion
-    pages_info_user = users_pages(user)
-
-    # Inicializo las siguientes variables sino luego no podré usar el +=
-    user_builds_maps = ""
-    user_builds_tables = ""
-    user_builds_slices = ""
-    for page in pages_info_user:
-        # Añado la lista de opciones que se veran en el menu de mapas,slices y tables
-        user_builds_slices += '<a class="dropdown-item" href="slices_'+ page +'">'+ page +'</a>'
-        user_builds_tables += '<a class="dropdown-item" href="tables_'+ page +'">'+ page +'</a>'
-        user_builds_maps += '<a class="dropdown-item" href="leaflet_'+ page +'">'+ page +'</a>'
-
-    # Debo introducir esas variables en el contexto para poder represetarlo
-    contexto = Context({'Access_Pages_Slices':user_builds_slices,'Access_Pages_Tables':user_builds_tables,'Access_Pages_Maps':user_builds_maps})
-
-    return contexto
 
 # ------------------------------------------------------------------------------
 # Hacemos el login mostrando la pagina principal si es GET y enviando informacion
@@ -92,31 +71,30 @@ def register(request):
 
 @csrf_exempt
 def index(request, peticion):
-    # -------- Esto es para conseguir que mis items de los submenus aparezcan como deben ----
     # Consigo el usuario que ha accedido al portal
-    url = request.path
-    url_user = url.split('/')[1] # Obtengo urjc, ciemat o com_mad
-    print("Usuario: "+url_user)
+    user = request.user
+    print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
-    contexto = user_items(url_user)
-    # ---------------------------------------------------------------------------------------
+    pages_info_user = users_pages(str(user))
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = Context({'Builds':pages_info_user})
 
     return render(request,'index.html',contexto)
 
 # ------------------------------------------------------------------------------
 
 def slices(request, peticion):
-    # -------- Esto es para conseguir que mis items de los submenus aparezcan como deben ----
     # Consigo el usuario que ha accedido al portal
-    url = request.path
-    url_user = url.split('/')[1] # Obtengo urjc, ciemat o com_mad
-    print("Usuario: "+url_user)
+    user = request.user
+    print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
-    contexto = user_items(url_user)
-    # ---------------------------------------------------------------------------------------
+    pages_info_user = users_pages(str(user))
 
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = Context({'Builds':pages_info_user})
 
     return render(request,'slices.html',contexto)
 
@@ -124,23 +102,23 @@ def slices(request, peticion):
 
 @csrf_exempt
 def tables(request, peticion):
-    # -------- Esto es para conseguir que mis items de los submenus aparezcan como deben ----
     # Consigo el usuario que ha accedido al portal
-    url = request.path
-    url_user = url.split('/')[1] # Obtengo urjc, ciemat o com_mad
-    print("Usuario: "+url_user)
+    user = request.user
+    print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
-    contexto = user_items(url_user)
-    # ---------------------------------------------------------------------------------------
+    pages_info_user = users_pages(str(user))
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = Context({'Builds':pages_info_user})
 
     return render(request,'tables.html',contexto)
 
 # ------------------------------------------------------------------------------
 
 def leaflet(request, peticion):
-    print(request)  # Esto devuelve <WSGIRequest: GET '/leaflet_ED70.html'>
-    print(request.path) # Esto devuelve /urjc/leaflet_ED70.html
+    # print(request)  # Esto devuelve <WSGIRequest: GET '/leaflet_ED70.html'>
+    # print(request.path) # Esto devuelve /urjc/leaflet_ED70.html
 
     # -------- Esto es para conseguir saber que leaflet me estan pidiendo ----
     url = request.path
@@ -151,29 +129,29 @@ def leaflet(request, peticion):
     leaf_plantilla = url_leaflet+'.html'
     # ---------------------------------------------------------------------------------------
 
-    # -------- Esto es para conseguir que mis items de los submenus aparezcan como deben ----
     # Consigo el usuario que ha accedido al portal
-    url = request.path
-    url_user = url.split('/')[1] # Obtengo urjc, ciemat o com_mad
-    print("Usuario: "+url_user)
+    user = request.user
+    print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
-    contexto = user_items(url_user)
-    # ---------------------------------------------------------------------------------------
+    pages_info_user = users_pages(str(user))
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = Context({'Builds':pages_info_user})
 
     return render(request,leaf_plantilla,contexto)
 
 # ------------------------------------------------------------------------------
 
 def maps(request):
-    # -------- Esto es para conseguir que mis items de los submenus aparezcan como deben ----
     # Consigo el usuario que ha accedido al portal
-    url = request.path
-    url_user = url.split('/')[1] # Obtengo urjc, ciemat o com_mad
-    print("Usuario: "+url_user)
+    user = request.user
+    print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
-    contexto = user_items(url_user)
-    # ---------------------------------------------------------------------------------------
+    pages_info_user = users_pages(str(user))
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = Context({'Builds':pages_info_user})
 
     return render(request,'maps.html',contexto)
