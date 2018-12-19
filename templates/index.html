@@ -36,50 +36,14 @@
 
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-      <a class="navbar-brand mr-1" href="index">Start Bootstrap</a>
+      <a class="navbar-brand mr-1" href="index">Motas Bootstrap</a>
 
       <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
       </button>
 
-      <!-- Navbar Search -->
-      <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form>
-
       <!-- Navbar -->
-      <ul class="navbar-nav ml-auto ml-md-0">
-        <li class="nav-item dropdown no-arrow mx-1">
-          <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown no-arrow mx-1">
-          <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-envelope fa-fw"></i>
-            <span class="badge badge-danger">7</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
+      <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <li class="nav-item dropdown no-arrow">
           <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-user-circle fa-fw"></i>
@@ -112,8 +76,10 @@
             <span>Slices</span>
           </a>
           {% block pages_slices %}
-          <div class="dropdown-menu" aria-labelledby="mapsDropdown">
-            {{Access_Pages_Slices|safe}}
+          <div class="dropdown-menu" aria-labelledby="slicesDropdown">
+            {% for build in Builds %}
+              <a class="dropdown-item" href="slices_{{build}}">{{build}}</a>
+            {% endfor %}
           </div>
           {% endblock %}
         </li>
@@ -123,8 +89,10 @@
             <span>Tables</span>
           </a>
           {% block pages_tables %}
-          <div class="dropdown-menu" aria-labelledby="mapsDropdown">
-            {{Access_Pages_Tables|safe}}
+          <div class="dropdown-menu" aria-labelledby="tablesDropdown">
+            {% for build in Builds %}
+              <a class="dropdown-item" href="tables_{{build}}">{{build}}</a>
+            {% endfor %}
           </div>
           {% endblock %}
         </li>
@@ -135,7 +103,9 @@
           </a>
           {% block pages_maps %}
           <div class="dropdown-menu" aria-labelledby="mapsDropdown">
-            {{Access_Pages_Maps|safe}}
+            {% for build in Builds %}
+              <a class="dropdown-item" href="leaflet_{{build}}">{{build}}</a>
+            {% endfor %}
           </div>
           {% endblock %}
         </li>
@@ -150,7 +120,7 @@
           <!-- Breadcrumbs-->
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
-              <a href="#">Dashboard</a>
+              <a href="index">Dashboard</a>
             </li>
             <li class="breadcrumb-item active">Overview</li>
           </ol>
@@ -224,15 +194,7 @@
           </div>
 
           <!-- Area Chart Example-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fas fa-chart-area"></i>
-              Leaflet Map Example</div>
-            <div class="card-body">
-              <canvas id="myAreaChart" width="100%" height="30"></canvas>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-          </div>
+
 
           <!-- DataTables Example -->
           <div class="card mb-3">
@@ -787,6 +749,10 @@
     <!-- Demo scripts for this page-->
     <script src="{% static 'startbootstrap-sb-admin/js/demo/datatables-demo.js' %}"></script>
     <script src="{% static 'startbootstrap-sb-admin/js/demo/chart-area-demo.js' %}"></script>
+
+    <!-- This is an empty block, but later use it to add adicional js like leaflet maps... -->
+    {% block adicional_js %}
+    {% endblock %}
 
   </body>
 

@@ -8,7 +8,7 @@
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="#">Dashboard</a>
+          <a href="index">Dashboard</a>
         </li>
         <li class="breadcrumb-item active">Maps</li>
       </ol>
@@ -19,20 +19,7 @@
           <i class="fas fa-chart-area"></i>
           Leaflet Maps ED_70</div>
         <div class="card-body">
-          <style>
-          #map {
-            width: 100%;
-            height: 580px;
-            box-shadow: 5px 5px 5px #888;
-          }
-          </style>
-          <div id = 'map'></div>
-          <script>
-            var map = L.map('map').setView([40.45480,-3.7287],15);
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',maxZoom: 18}).addTo(map);
-            L.control.scale().addTo(map);
-            L.marker([40.45480,-3.7287],{draggable: true}).addTo(map)
-          </script>
+          <div id ="map"></div>
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
       </div>
@@ -55,4 +42,10 @@
     </footer>
 
   </div>
+
+{% endblock %}
+
+{% block adicional_js %}
+  {% load staticfiles %}
+  <script src="{% static 'js/leaflet_ED_70.js' %}"></script>
 {% endblock %}
