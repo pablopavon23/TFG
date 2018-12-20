@@ -167,7 +167,7 @@ for (buildingName in planos) {
     if (!buildingPlans[i]) {
       buildingPlans[i] = {}
     }
-    var overlay = L.imageOverlay.rotated('planos/' + buildingName + '_p' + i + '.jpg', point1, point2, point3, {
+    var overlay = L.imageOverlay.rotated('img/planos/' + buildingName + '_p' + i + '.jpg', point1, point2, point3, {
       opacity: 0.9,
       interactive: false
     });
