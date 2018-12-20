@@ -143,7 +143,7 @@ def leaflet(request, peticion):
 
 # ------------------------------------------------------------------------------
 
-def maps(request):
+def maps(request,peticion):
     # Consigo el usuario que ha accedido al portal
     user = request.user
     print("User is: "+str(user))
@@ -154,4 +154,4 @@ def maps(request):
     # Lo inroduzco como contexto para representarlo despues
     contexto = Context({'Builds':pages_info_user})
 
-    return render(request,'maps.html',contexto)
+    return render(request,'moving_planos.html',contexto)
