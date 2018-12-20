@@ -50,5 +50,15 @@
 
 {% block adicional_js %}
   {% load staticfiles %}
+  <!-- JavaScript to represent Clinica_Fuenlabrada map -->
   <script src="{% static 'js/leaflet_Clinica_Fuenlabrada.js' %}"></script>
+
+  <!-- Load planos css -->
+  <link href="{% static 'css/planos.css' %}" rel="stylesheet">
+
+  <!-- Load planos images -->
+  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p1.jpg' %}" type="image/jpg" />
+  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p2.jpg' %}" type="image/jpg" />
+  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p3.jpg' %}" type="image/jpg" />
+  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p4.jpg' %}" type="image/jpg" />
 {% endblock %}
