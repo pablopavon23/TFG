@@ -1,5 +1,9 @@
 {% extends "index.html" %}
 
+{% block page_title %}
+  <title>Motas - Maps ED_70</title>
+{% endblock %}
+
 {% block content_index %}
   <div id="content-wrapper">
 
@@ -47,5 +51,9 @@
 
 {% block adicional_js %}
   {% load staticfiles %}
+  <!-- JavaScript to represent ED_70 map -->
   <script src="{% static 'js/leaflet_ED_70.js' %}"></script>
+
+  <!-- Load planos css -->
+  <link href="{% static 'css/planos.css' %}" rel="stylesheet">
 {% endblock %}
