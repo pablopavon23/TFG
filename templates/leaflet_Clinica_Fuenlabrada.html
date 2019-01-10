@@ -52,13 +52,18 @@
   {% load staticfiles %}
   <!-- JavaScript to represent Clinica_Fuenlabrada map -->
   <script src="{% static 'js/leaflet_Clinica_Fuenlabrada.js' %}"></script>
+  <script src="{% static 'js/js_planos/layers_thc.js' %}"></script>
+  <script src="{% static 'js/js_planos/leyenda_medidas.js' %}"></script>
+  <script src="{% static 'js/js_planos/load_medidas.js' %}"></script>
+  <script src="{% static 'js/js_planos/change_floors.js' %}"></script>
+  <script src="{% static 'js/js_planos/change_planos.js' %}"></script>
 
   <!-- Load planos css -->
   <link href="{% static 'css/planos.css' %}" rel="stylesheet">
 
-  <!-- Load planos images -->
-  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p1.jpg' %}" type="image/jpg" />
-  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p2.jpg' %}" type="image/jpg" />
-  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p3.jpg' %}" type="image/jpg" />
-  <link rel="shortcut icon" href="{% static 'img/planos/Clinica Fuenlabrada_p4.jpg' %}" type="image/jpg" />
+  <!-- Load planos images >
+  <link href="{% static 'img/planos/Clinica_Fuenlabrada_p1.jpg' %}" type="image/jpg" />
+  <link href="{% static 'img/planos/Clinica_Fuenlabrada_p2.jpg' %}" type="image/jpg" />
+  <link href="{% static 'img/planos/Clinica_Fuenlabrada_p3.jpg' %}" type="image/jpg" />
+  <link href="{% static 'img/planos/Clinica_Fuenlabrada_p4.jpg' %}" type="image/jpg" /-->
 {% endblock %}

@@ -53,10 +53,13 @@
   {% load staticfiles %}
   <!-- JavaScript to represent ED_70 map -->
   <script src="{% static 'js/leaflet_ED_70.js' %}"></script>
+  <script src="{% static 'js/js_planos/layers_thc.js' %}"></script>
+  <script src="{% static 'js/js_planos/leyenda_medidas.js' %}"></script>
+  <script src="{% static 'js/js_planos/load_medidas.js' %}"></script>
 
   <!-- Load planos css -->
   <link href="{% static 'css/planos.css' %}" rel="stylesheet">
 
-  <!-- Load planos images -->
-  <link rel="shortcut icon" href="{% static 'img/planos/Ciemat_ ED70_p1.jpg' %}" type="image/jpg" />
+  <!-- Load planos images >
+  <link href="{% static 'img/planos/Ciemat_ED70_p1.jpg' %}" type="image/jpg" /-->
 {% endblock %}

@@ -31,6 +31,7 @@
     <!-- Necessary to Leaflet-->
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+  
 
   </head>
 
@@ -751,6 +752,16 @@
     <!-- Demo scripts for this page-->
     <script src="{% static 'startbootstrap-sb-admin/js/demo/datatables-demo.js' %}"></script>
     <script src="{% static 'startbootstrap-sb-admin/js/demo/chart-area-demo.js' %}"></script>
+
+    <!-- Scripts for represent heatmaps -->
+    <!-- CARGAMOS EL JSON CON LOS DATOS DE CADA EDIFICIO -->
+    <script src="{% static 'js/js_planos/planos.js' %}"></script>
+    <!-- CARGAMOS EL SCRIPT CON LAS MEDIDAS -->
+    <script src="{% static 'js/js_planos/medidas_db.js' %}"></script>
+    <!-- CARGAMOS EL SCRIPT PARA COLOCAR NUESTROS PLANOS -->
+    <script src="{% static 'js/js_planos/leaflet_libraries/Leaflet.ImageOverlay.Rotated.js' %}"></script>
+    <!-- CARGAMOS EL SCRIPT PARA COLOCAR NUESTRAS MEDIDAS -->
+    <script src="{% static 'js/js_planos/leaflet_libraries/leaflet-heat.js' %}"></script>
 
     <!-- This is an empty block, but later use it to add adicional js like leaflet maps... -->
     {% block adicional_js %}
