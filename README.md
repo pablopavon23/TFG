@@ -20,5 +20,6 @@
 ***
 #### Versión5 - V.10/01/2019:
 * Se consigue representar la leyenda de las medidas a representar en los mapas.
-* Implantación de planos de prueba superpuestos sobre las localizaciones que se desean. Necesario comprobar como cargar los planos que se tienen en la unidad local dentro de /static/img/planos/...
+* Implantación de planos de prueba superpuestos sobre las localizaciones que se desean.
+* Se cargan los planos que se tienen en la unidad local dentro de /static/img/planos/...
 * Al hacer click sobre un marker se consigue hacer zoom y visualizar los planos de los edificios.
