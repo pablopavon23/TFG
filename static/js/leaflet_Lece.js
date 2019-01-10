@@ -36,7 +36,7 @@ var point1 = L.latLng(building["p1"][0],  building["p1"][1]);
 var point2 = L.latLng(building["p2"][0],  building["p2"][1]);
 var point3 = L.latLng(building["p3"][0],  building["p3"][1]);
 
-var overlay = L.imageOverlay.rotated('http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg', point1,point2,point3, {
+var overlay = L.imageOverlay.rotated("/static/img/planos/Ciemat_LECE.jpg", point1,point2,point3, {
   opacity: 0.9,
   interactive: false
 }).addTo(map);
