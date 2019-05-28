@@ -49,7 +49,7 @@ def user_login(request):
             return redirect(new_url)
 
     else:
-        contexto = Context({})
+        contexto = {'Login':"Hola"}
         return render(request,'login.html',contexto)
 
 # ------------------------------------------------------------------------------
@@ -58,12 +58,12 @@ def user_logout(request,peticion):
     # print(request)  # <WSGIRequest: GET '/urjc/logout'>
     # print(peticion) # urjc
     logout(request)
-    return redirect('/')
+    return redirect('motas/')
 
 # ------------------------------------------------------------------------------
 
 def register(request):
-    contexto = Context({'Registro':"Hola"})
+    contexto = {'Registro':"Hola"}
     return render(request,'register.html',contexto)
     # return HttpResponse("Hello people")
 
@@ -79,7 +79,7 @@ def index(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = Context({'Builds':pages_info_user})
+    contexto = {'Builds':pages_info_user}
 
     return render(request,'index.html',contexto)
 
@@ -94,7 +94,7 @@ def slices(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = Context({'Builds':pages_info_user})
+    contexto = {'Builds':pages_info_user}
 
     return render(request,'slices.html',contexto)
 
@@ -110,7 +110,7 @@ def tables(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = Context({'Builds':pages_info_user})
+    contexto = {'Builds':pages_info_user}
 
     return render(request,'tables.html',contexto)
 
@@ -125,7 +125,7 @@ def leaflet(request, peticion):
     url_leaflet = url.split('/')[2] # Obtengo leaflet_ED70, leaflet_CF o leaflet_Alm
     print(url_leaflet)
 
-    contexto = Context({'URL':url_leaflet})
+    contexto = {'URL':url_leaflet}
     leaf_plantilla = url_leaflet+'.html'
     # ---------------------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ def leaflet(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = Context({'Builds':pages_info_user})
+    contexto = {'Builds':pages_info_user}
 
     return render(request,leaf_plantilla,contexto)
 
@@ -152,6 +152,6 @@ def maps(request,peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = Context({'Builds':pages_info_user})
+    contexto = {'Builds':pages_info_user}
 
     return render(request,'moving_planos.html',contexto)
