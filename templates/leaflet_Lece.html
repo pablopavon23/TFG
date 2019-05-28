@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block adicional_js %}
-  {% load staticfiles %}
+  {% load static %}
   <!-- JavaScript to represent LECE map -->
   <script src="{% static 'js/leaflet_Lece.js' %}"></script>
   <script src="{% static 'js/js_planos/layers_thc.js' %}"></script>
@@ -58,7 +58,7 @@
 
   <!-- Load planos css -->
   <link href="{% static 'css/planos.css' %}" rel="stylesheet">
-  
+
   <!-- Load planos images >
   <link href="{% static 'img/planos/Ciemat_LECE_p1.jpg' %}" type="image/jpg" /-->
 {% endblock %}
