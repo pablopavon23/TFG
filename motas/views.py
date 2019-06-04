@@ -58,7 +58,7 @@ def user_logout(request,peticion):
     # print(request)  # <WSGIRequest: GET '/urjc/logout'>
     # print(peticion) # urjc
     logout(request)
-    return redirect('motas/')
+    return redirect('/')
 
 # ------------------------------------------------------------------------------
 
