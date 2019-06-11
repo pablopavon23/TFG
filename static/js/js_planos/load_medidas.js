@@ -11,6 +11,11 @@ var gradiente = {
   1.0:    '#FF0000'
 };
 
+// para alojar las medidas de cada variable tomadas y buscar valors anomalos
+var temperaturas = [];
+var humedades = [];
+var dioxis = [];
+
 /* diccionario con el conjunto de medidas */
 var medidasLayers = {}
 
@@ -24,7 +29,7 @@ function generateMeasuresLayer (floor) {
   floorLayer['tmp'] = tmppoints;
   floorLayer['co2'] = co2points;
   floorLayer['humedad'] = humedadpoints
-  
+
   return floorLayer
 };
 
@@ -52,17 +57,22 @@ function removeMeasuresLayer (floor) {
      };
 
      if (mota["TMP-aire (c)"]) {
+       temperaturas.push(mota["TMP-aire (c)"])
        var arr1 = [mota["gps"][1], mota["gps"][0], mota["TMP-aire (c)"]]
        medidasLayers[mota['planta']]['tmp'].push(arr1)
      }
      if (mota["CO2 (ppp)"]) {
+       dioxis.push(mota["CO2 (ppp)"])
        var arr2 = [mota["gps"][1], mota["gps"][0], mota["CO2 (ppp)"]]
        medidasLayers[mota['planta']]['co2'].push(arr2)
      }
      if (mota["HUMEDAD (%)"]) {
+       humedades.push(mota["HUMEDAD (%)"])
        var arr3 = [mota["gps"][1], mota["gps"][0], mota["HUMEDAD (%)"]]
        medidasLayers[mota['planta']]['humedad'].push(arr3)
      }
+
+     console.log("TEMperatura: "+temperaturas)
 
    };
 };

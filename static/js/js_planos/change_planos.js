@@ -30,7 +30,7 @@ for (build in planos) {
     if (!buildingPlans[i]) {
       buildingPlans[i] = {}
     }
-    var overlay = L.imageOverlay.rotated('/static/img/planos/Clinica_Fuenlabrada_p'+i+'.jpg', point1,point2,point3, {
+    var overlay = L.imageOverlay.rotated('/static/img/planos/Clinica_Fuenlabrada_p'+i+'.png', point1,point2,point3, {
       opacity: 0.9,
       interactive: false
     });
