@@ -25,4 +25,8 @@
 * Al hacer click sobre un marker se consigue hacer zoom y visualizar los planos de los edificios.
 
 #### Versión6 - V.03/06/2019:
-* Migración hacia Django 2.1.7 finalizada. 
+* Migración hacia Django 2.1.7 finalizada.
+
+#### Versión7 - V.11/06/2019:
+* Colocación de los planos correctos en edificio de Clinica_Fuenlabrada, así como ubicación correcta de las diferentes motas y sensores en el resto de edificios.
+* Primeras pruebas de integración de la librería Highcharts de JavaScript para una futura representación de las medidas tomadas. 
