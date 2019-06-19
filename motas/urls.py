@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^(.*)/leaflet', motas_views.leaflet),
     # ex: localhost:1234/(entidad)/maps
     url(r'^(.*)/maps', motas_views.maps),
+    # ex: localhost:1234/(entidad)/administration
+    url(r'^(.*)/administration', motas_views.administration),
 ]
