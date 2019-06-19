@@ -31,3 +31,8 @@
 * Colocación de los planos correctos en edificio de Clinica_Fuenlabrada, así como ubicación correcta de las diferentes motas y sensores en el resto de edificios.
 * Primeras pruebas de integración de la librería Highcharts de JavaScript para una futura representación de las medidas tomadas.
 ***
+#### Versión8 - V.20/06/2019:
+* Representación en tablas de los datos tomados aún sin conectar con la base de datos mySQL.
+* Modificación de la plantilla tables.html así como de las vistas (views.py).
+* Creación de un script en python que ayude a obtener las medidas de los distintos edificios.
+***
