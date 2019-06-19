@@ -1,0 +1,70 @@
+{% extends "index.html" %}
+
+{% block page_title %}
+  <title>Motas - Slices</title>
+{% endblock %}
+
+{% block content_index %}
+  <div id="content-wrapper">
+
+    <div class="container-fluid">
+
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="index">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Slices</li>
+      </ol>
+
+      <div id="container">
+        <!-- <p>HOLA</p> -->
+      </div>
+
+      <script>
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Titanic Survivors by Ticket Class'
+            },
+            xAxis: {
+                categories: [
+                  {% for entry in dataset %}'{{ entry.ticket_class }} Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+                ]
+            },
+            series: [{
+                name: 'Survived',
+                data: [
+                  {% for entry in dataset %}{{ entry.survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'green'
+            }, {
+                name: 'Not survived',
+                data: [
+                  {% for entry in dataset %}{{ entry.not_survived_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                ],
+                color: 'red'
+            }]
+        });
+      </script>
+
+      <p class="small text-center text-muted my-5">
+        <em>More chart examples coming soon...</em>
+      </p>
+
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright © Your Website 2018</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+{% endblock %}
