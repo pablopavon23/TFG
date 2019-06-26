@@ -36,3 +36,9 @@
 * Modificación de la plantilla tables.html así como de las vistas (views.py).
 * Creación de un script en python que ayude a obtener las medidas de los distintos edificios.
 ***
+#### Versión9 - V.26/06/2019:
+* Representación de las gráficas con datos sobre cada mota y medida.
+* Se añaden las opciones para elegir qué mota y/o medida queremos observar en las tablas y las gráficas.
+* Adaptación del script creado para obtener las medidas de los edificios por existir errores al querer representar las mismas en Highcharts (JavaScript reconoce ":" de la hora como caracter reservado).
+* Modificación de la apariencia de la vista de 'login'.
+***
