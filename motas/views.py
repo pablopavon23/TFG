@@ -87,6 +87,67 @@ def index(request, peticion):
 
 # ------------------------------------------------------------------------------
 
+def check_values(medidas_test):
+    # Comprobamos que no haya valores anómalos en temperaturas: ----------------
+    temperaturas = []
+    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+        print("La temperatura: "+str(medidas.get("TMPaire")))
+        if ((medidas.get("TMPaire")) != None):   # Si no tenemos medida no se añade
+            temperaturas.append(medidas.get("TMPaire"))
+
+    print("Temperaturas: "+str(temperaturas))
+    temperaturas = sorted(temperaturas)
+    print("Las motas despues son: "+str(temperaturas))    # Agrupamos los temperatura en orden ascendente
+
+    if (temperaturas[0] < 0.0) or (temperaturas[len(temperaturas)-1] > 50.0):
+        alertar_TMP = True
+    else:
+        alertar_TMP = False
+    # --------------------------------------------------------------------------
+
+    # Comprobamos que no haya valores anómalos en co2: ----------------
+    dioxido = []
+    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+        if ((medidas.get("CO2")) != None):   # Si no tenemos medida no se añade
+            dioxido.append(medidas.get("CO2"))
+
+    print("c02: "+str(dioxido))
+    dioxido = sorted(dioxido)
+    print("c02 despues son: "+str(dioxido))    # Agrupamos los temperatura en orden ascendente
+
+    if (dioxido[0] < 0.0) or (dioxido[len(dioxido)-1] > 810.0):
+        alertar_CO = True
+    else:
+        alertar_CO = False
+    # --------------------------------------------------------------------------
+
+    # Comprobamos que no haya valores anómalos en humedades: ----------------
+    humedades = []
+    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+        if ((medidas.get("HUMEDAD")) != None):   # Si no tenemos medida no se añade
+            humedades.append(medidas.get("HUMEDAD"))
+
+    print("humedades: "+str(humedades))
+    humedades = sorted(humedades)
+    print("humedades despues son: "+str(humedades))    # Agrupamos los temperatura en orden ascendente
+
+    if (humedades[0] < 0.0) or (humedades[len(humedades)-1] > 85.0):
+        alertar_HU = True
+    else:
+        alertar_HU = False
+    # --------------------------------------------------------------------------
+
+    if (not alertar_TMP) and (not alertar_CO) and (not alertar_HU):
+        alertar = False
+    else:
+        alertar = True
+
+    """ La función de esta función es devolver si hay que alertar o no"""
+    return alertar
+
+# ------------------------------------------------------------------------------
+
+@csrf_exempt
 def slices(request, peticion):
     # Consigo el usuario que ha accedido al portal
     user = request.user
@@ -97,46 +158,72 @@ def slices(request, peticion):
     url_slices = url.split('/')[2] # Obtengo slices_ED_70, slices_Clinica_Fuenlabrada y slices_Lece
     print(url_slices)
 
-    # Begin Test Highcharts --------------------------->
-    dataset_1 = [
-      {'ticket_class': 1, 'survived_count': 200, 'not_survived_count': 123},
-      {'ticket_class': 2, 'survived_count': 119, 'not_survived_count': 158},
-      {'ticket_class': 3, 'survived_count': 181, 'not_survived_count': 528}
-    ]
-    dataset_2 = [
-      {'ticket_class': 3, 'survived_count': 300, 'not_survived_count': 223},
-      {'ticket_class': 4, 'survived_count': 219, 'not_survived_count': 258},
-      {'ticket_class': 5, 'survived_count': 281, 'not_survived_count': 628}
-    ]
-    dataset_3 = [
-      {'ticket_class': 6, 'survived_count': 400, 'not_survived_count': 323},
-      {'ticket_class': 7, 'survived_count': 319, 'not_survived_count': 358},
-      {'ticket_class': 8, 'survived_count': 381, 'not_survived_count': 728}
-    ]
+    # -------- Esto es para conseguir saber que slice me estan pidiendo ----
+    url = request.path
+    url_slices = url.split('/')[2] # Obtengo slices_ED_70, slices_Clinica_Fuenlabrada y slices_Lece
+    print("Solicitan la slice: "+url_slices)
+    # Meto el nombre del edificio para personalizarlo más
+    if (url_slices == "slices_ED_70"):
+        nombre_ed = "Edificio 70, Ciemat"
+    elif (url_slices == "slices_Clinica_Fuenlabrada"):
+        nombre_ed = "Clínica de Fuenlabrada"
+    elif (url_slices == "slices_Lece"):
+        nombre_ed = "Plataforma Solar de Andalucía, Almería"
 
-    diccionario = {
-    'Test_1': dataset_1,
-    'Test_2': dataset_2,
-    'Test_3': dataset_3
-    }
+    medidas_test = get_medidas(url_slices) # medidas_test es la lista de diccionarios
+    # La funcion get_medidas me devuelve la lista con las medidas para un edificio concreto
 
-    # En función de la solicitud de gráfica realizada proceso una base de datos de medidas u otra
-    # # PEROOOJO que ahora mismo solo estoy testeando aunque la estructura del if me valdrá luego
-    if url_slices == 'slices_ED_70':
-        dataset = diccionario.get('Test_1')
-    elif url_slices == 'slices_Clinica_Fuenlabrada':
-        dataset = diccionario.get('Test_2')
-    elif url_slices == 'slices_Lece':
-        dataset = diccionario.get('Test_3')
-    # End Test Highcharts --------------------------->
+# --------- Copio tal cual de tables
+    cant_motas = []   # Inicializo la lista donde guardare mota1, mota2...
+    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+        id_mota = medidas.get("mota")  # esto me permite saber que id de mota tengo
+        print("Mota: "+str(id_mota)) #ASi obtengo la mota a la que pertenece
+        if not str(id_mota) in cant_motas:
+            cant_motas.append(str(id_mota))
+
+    print("El numero de motas es: "+str(len(cant_motas)))
+    cant_motas = sorted(cant_motas)
+    print("Las motas despues son: "+str(cant_motas))    # Agrupamos los id_mota en orden ascendente
+    # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota
+
+    esTMP = False
+    esHUM = False
+    esCO = False
+    if request.method == 'POST':
+        mota_concreta = request.POST['mota']    # Averiguo sobre que mota en concreto solicitan info
+        print("La mota es: "+mota_concreta)
+        medida_concreta = request.POST['medidatipo']    # Averiguo sobre que medida en concreto solicitan info
+        print("La medida es: "+medida_concreta)
+        # Segun la medida que me pidan solicitare luego en el JavaScript una medida u otra:
+        if medida_concreta == 'Temperatura':
+            esTMP = True
+        elif medida_concreta == 'Humedad':
+            esHUM = True
+        elif medida_concreta == 'CO2':
+            esCO = True
+        info_mota = []  # aqui almacenare solo las que el id de mota coincida con el pedido
+        for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+            print("La verdadera: "+str(medidas.get("mota")))
+            if str(medidas.get("mota")) == str(mota_concreta):    # comparo id como str sino no reconoce al ser str == int
+                info_mota.append(medidas)
+        medidas_send = info_mota    # si es un POST mando las medidas de una mota concreta
+    else:
+        medidas_send = medidas_test # si es un GET mando todas las medidas tal cual las recibo de get_medidas()
+# -- Hasta aqui copio tal cual de tables
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
     pages_info_user = users_pages(str(user))
 
-    # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user, 'dataset':dataset}
+    # Llamo a la funcion que me indica si hay alerta de valores anomalos o no:
+    alerta = check_values(medidas_test)
 
-    return render(request,'slices_test.html',contexto)
+    # Tipos de medidas a elegir:
+    meds = ['Temperatura','Humedad','CO2']
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = {'Builds':pages_info_user, 'Medidas': medidas_send, 'alerta':alerta, 'Edificio': nombre_ed, 'Id_motas': cant_motas, 'Tipos_med': meds, 'esTMP': esTMP, 'esHUM': esHUM, 'esCO': esCO}
+
+    return render(request,'slices.html',contexto)
 
 # ------------------------------------------------------------------------------
 
@@ -184,7 +271,7 @@ def tables(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Medidas': medidas_send, 'Id_motas': cant_motas}
+    contexto = {'Builds':pages_info_user, 'Medidas': medidas_send, 'Id_motas': cant_motas}
 
     return render(request,'tables.html',contexto)
 
