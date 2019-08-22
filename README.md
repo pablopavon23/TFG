@@ -42,3 +42,6 @@
 * Adaptación del script creado para obtener las medidas de los edificios por existir errores al querer representar las mismas en Highcharts (JavaScript reconoce ":" de la hora como caracter reservado).
 * Modificación de la apariencia de la vista de 'login'.
 ***
+#### Versión10 - V.22/08/2019:
+* Consecución del acceso a la base de datos en local que contiene las medidas tomadas en el edificio de la Clinica_Fuenlabrada.
+* Se usarán dos bases de datos, una para el registro simple de usuarios y otra para conseguir los datos. 
