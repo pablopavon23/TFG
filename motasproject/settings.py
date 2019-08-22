@@ -78,7 +78,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    },
+	'motas': {
+         'ENGINE': 'django.db.backends.mysql',	# BBDD para sacar la info de las medidas.
+         'NAME': os.path.join(BASE_DIR, 'clinica_oct3.sql'),
+         'USER': 'user_motas',
+         'PASSWORD': 'motas_user',
+         'HOST': '127.0.0.1',
+         'PORT': '3306',
+     }
 }
 
 # DATABASES = {
