@@ -44,4 +44,8 @@
 ***
 #### Versión10 - V.22/08/2019:
 * Consecución del acceso a la base de datos en local que contiene las medidas tomadas en el edificio de la Clinica_Fuenlabrada.
-* Se usarán dos bases de datos, una para el registro simple de usuarios y otra para conseguir los datos. 
+* Se usarán dos bases de datos, una para el registro simple de usuarios y otra para conseguir los datos.
+***
+#### Versión11 - V.27/08/2019:
+* Integración de los modelos de la base de datos de la Clinica_Fuenlabrada (tablas: clinica_fuenlabrada_1_motas, clinica_fuenlabrada_1_sensores y clinica_fuenlabrada_1_medidas).
+* No son necesarias dos bases de datos, Django ofrece soporte para registro de usuarios sin necesidad de que sea SQLite la base de datos.
