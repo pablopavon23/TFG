@@ -49,3 +49,7 @@
 #### Versión11 - V.27/08/2019:
 * Integración de los modelos de la base de datos de la Clinica_Fuenlabrada (tablas: clinica_fuenlabrada_1_motas, clinica_fuenlabrada_1_sensores y clinica_fuenlabrada_1_medidas).
 * No son necesarias dos bases de datos, Django ofrece soporte para registro de usuarios sin necesidad de que sea SQLite la base de datos.
+***
+#### Versión12 - V.03/10/2019:
+* Extracción de datos de la base 'Clinica_Fuenlabrada' importada desde el fichero .sql en local.
+* Se comienzan a realizar las primeras pruebas extaryendo datos de la tabla 'clinica_fuenlabrada_1_motas', con el fin de estudiar la manera más eficiente de generar archivos JSON con esos datos. 
