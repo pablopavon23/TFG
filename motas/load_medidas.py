@@ -1,5 +1,7 @@
 from datetime import datetime, date, time, timedelta
 import calendar
+# Importamos los modelos:
+from .models import *
 
 # Para el caso del EDIFICIO70 del Ciemat y de la PSA(Plataforma Solar de Almeria) nos inventamos las medidas
 def get_medidas(edificio):
@@ -117,140 +119,10 @@ def get_medidas(edificio):
 
     return medidas
 
-"""
-var medidas =
-{
-  "ED70_1":
-  {
-    "1":
-    {
-      "CO2 (ppp)": 553.628,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.7287271, 40.45471573]
-    },
-    "2":
-    {
-      "CO2 (ppp)": 575.542,
-      "TMP-aire (c)": 27.7478,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.72868991, 40.45471573]
-    },
-    "3":
-    {
-      "CO2 (ppp)": 776.035,
-      "TMP-aire (c)": 23.3646,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.728652, 40.45471954]
-    },
-    "4":
-    {
-      "CO2 (ppp)": 462.749,
-      "TMP-aire (c)": 24.5945,
-      "HUMEDAD (%)": 22.5998,
-      "ABIERTO/CERRADO": 0.0,
-      'planta': 1,
-      "gps": [-3.7286551, 40.45475006]
-    },
-    "5":
-    {
-      "ABIERTO/CERRADO": 0,
-      "TMP-superficie (c)": 22.9343,
-      'planta': 1,
-      "gps": [-3.72866201, 40.45479965]
-    },
-    "6":
-    {
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.72861505, 40.45477676]
-    },
-    "7":
-    {
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.72861695, 40.45475388]
-    },
-    "8":
-    {
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.72861409, 40.45472336]
-    }
-  },
-  "FUENLABRADA":
-  {
-    "1":
-    {
-      "CO2 (ppp)": 553.628,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-3.796925, 40.277168]
-    },
-    "2":
-    {
-      "CO2 (ppp)": 575.542,
-      "TMP-aire (c)": 27.7478,
-      "ABIERTO/CERRADO": 0,
-      'planta': 2,
-      "gps": [-3.797086, 40.277256]
-    },
-    "3":
-    {
-      "CO2 (ppp)": 776.035,
-      "TMP-aire (c)": 23.3646,
-      "ABIERTO/CERRADO": 0,
-      'planta': 3,
-      "gps": [-3.797315, 40.277284]
-    },
-    "4":
-    {
-      "CO2 (ppp)": 462.749,
-      "TMP-aire (c)": 24.5945,
-      "HUMEDAD (%)": 22.5998,
-      "ABIERTO/CERRADO": 0.0,
-      'planta': 4,
-      "gps": [-3.797542, 40.277281]
-    }
-  },
-  "LECE":
-  {
-    "1":
-    {
-      "CO2 (ppp)": 553.628,
-      "HUMEDAD (%)": 22.5998,
-      "TMP-aire (c)": 27.7478,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-2.356121505675503, 37.09239468568795]
-    },
-    "2":
-    {
-      "CO2 (ppp)": 575.542,
-      "TMP-aire (c)": 27.7478,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-2.3554321779695044, 37.092505083904555]
-    },
-    "3":
-    {
-      "CO2 (ppp)": 776.035,
-      "TMP-aire (c)": 23.3646,
-      "ABIERTO/CERRADO": 0,
-      'planta': 1,
-      "gps": [-2.3561483277703132, 37.09188805005742]
-    },
-    "4":
-    {
-      "CO2 (ppp)": 462.749,
-      "TMP-aire (c)": 74.5945,
-      "HUMEDAD (%)": 22.5998,
-      "ABIERTO/CERRADO": 0.0,
-      'planta': 1,
-      "gps": [-2.3554134025056896, 37.09180931586367]
-    }
-  }
-};
-"""
+def test_sql():
+    # A modo de prueba saco la información
+    todas_motas = ClinicaFuenlabrada1Motas.objects.all()
+
+    medidas_test = todas_motas
+
+    return medidas_test
