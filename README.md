@@ -52,4 +52,9 @@
 ***
 #### Versión12 - V.03/10/2019:
 * Extracción de datos de la base 'Clinica_Fuenlabrada' importada desde el fichero .sql en local.
-* Se comienzan a realizar las primeras pruebas extaryendo datos de la tabla 'clinica_fuenlabrada_1_motas', con el fin de estudiar la manera más eficiente de generar archivos JSON con esos datos. 
+* Se comienzan a realizar las primeras pruebas extaryendo datos de la tabla 'clinica_fuenlabrada_1_motas', con el fin de estudiar la manera más eficiente de generar archivos JSON con esos datos.
+***
+#### Versión13 - V.07/10/2019:
+* Realización de una relación de las distintas motas que se ubican en la Clinica Fuenlabrada.
+* Se extraen las primeras instancias de la base de datos importante: 'clinica_fuenlabrada_1_medidas' y se consiguen generar JSON con los datos.
+* Se va a estudiar si el mejor método es el de crear un repositorio en local que permita un control de versiones o únicamente obtenerlos cada un cierto tiempo. 
