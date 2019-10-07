@@ -1,5 +1,8 @@
 from datetime import datetime, date, time, timedelta
 import calendar
+# Importamos el módulo predefinido para creacón de ficheros JSON:
+import json
+import os
 # Importamos los modelos:
 from .models import *
 
@@ -119,10 +122,85 @@ def get_medidas(edificio):
 
     return medidas
 
-def test_sql():
+# ---------------------------------------------------------------------------------------------------------
+
+def get_CF_info():
     # A modo de prueba saco la información
     todas_motas = ClinicaFuenlabrada1Motas.objects.all()
 
-    medidas_test = todas_motas
+    i = 0
+    dicts = []
+    while i < len(todas_motas):
+        dict = {}
+        dict['id'] = todas_motas[i].id_mota
+        dict['planta'] = planta_mota(todas_motas[i].id_mota)
+        dict['sensores'] = todas_motas[i].num_sensores
+        lista_sensores = ClinicaFuenlabrada1Sensores.objects.filter(id_mota=todas_motas[i].id_mota) # Busco los sensores asociados a esa mota
+        dict['tipsen'] = list(lista_sensores)
+        dicts.append(dict)
+        i += 1
 
-    return medidas_test
+    get_medidas_true()
+
+    return dicts
+
+# ---------------------------------------------------------------------------------------------------------
+
+# Funcion que me ayuda a poder meter un datetime en un JSON:
+def myconverter(o):
+    if isinstance(o, datetime):
+        return o.__str__()
+
+# ---------------------------------------------------------------------------------------------------------
+
+def get_medidas_true():
+    # Hago una query a la tabla de mi base de datos donde estan las medidas:
+    # todas_medidas = ClinicaFuenlabrada1Medidas.objects.all() -- Cuidado porque esto podría estar ejecutandose la vida
+    ultimas_medidas = ClinicaFuenlabrada1Medidas.objects.all()[:10]
+
+    # Ahora vamos a parsear la QuerySet e introducir la info en el JSON:
+    meds = []
+    for medida in ultimas_medidas:
+        med = {}
+        print("Ahi va el idesensor: "+str(medida.id_sensor))
+        med['idsen'] = medida.id_sensor
+        print("Ahí va la tipo de medida: "+str(medida.tipo_medida))
+        med['tipmed'] = medida.tipo_medida
+        med['idmota'] = medida.id_mota
+        med['med'] = medida.medida
+        print("Ahi va la hora: "+str(medida.hora))  # Esto me imprime: 2018-05-08 15:18:00+00:00
+        # print("La hora de medida es: "+str(hora_medida))
+        med['hora'] = medida.hora
+        meds.append(med)
+
+    # Generamos el archivo JSON que contiene la información requerida:
+    generate_json(meds)
+
+# ---------------------------------------------------------------------------------------------------------
+
+def generate_json(info_dicts):
+    # dir = 'C:/Pruebas'  # También es válido 'C:\\Pruebas' o r'C:\Pruebas' -- Esto por si quiero meterlo en un directorio distinto al que me encuentro
+    dir = '/home/ppp23/Escritorio/TFG/data'
+    file_name = "data1.json"
+
+    # with open(file_name, 'w') as file:
+    with open(os.path.join(dir, file_name), 'w') as file: #-- Esto por si quiero meterlo en un directorio distinto al que me encuentro
+        json.dump(info_dicts, file, default=myconverter)
+
+# ---------------------------------------------------------------------------------------------------------
+
+# Recibe como argumento el id_mota y según este podemos decir en qué planta está:
+def planta_mota(mota):
+
+    if mota in [13,18]:
+        planta = 1
+    elif mota in [12,14]:
+        planta = 2
+    elif mota in [1,2,3,5,6,7,15]:
+        planta = 3
+    elif mota in [8,9,10,11,16,17]:
+        planta = 4
+    else:
+        planta = "no data"
+
+    return planta

@@ -14,7 +14,7 @@ from .models import *
 # Importamos el lector de la SQL:
 # from .parser_SQL import executeScriptsFromFile
 # Importamos el archivo y función que reside en el mismo para cargar medidas:
-from .load_medidas import get_medidas, test_sql;
+from .load_medidas import get_medidas, get_CF_info;
 
 # Create your views here.
 
@@ -78,15 +78,13 @@ def index(request, peticion):
     print("User is: "+str(user))
 
     # Llamo a la funcion de test de acceso a sql
-    test_medidas = test_sql()
-    test_motas = test_medidas[0].id_mota
-    test_sensores = test_medidas[0].num_sensores
+    dict = get_CF_info()
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user, 'User': user, 'Medidas_mota': test_motas, 'Medidas_sensores': test_sensores}
+    contexto = {'Builds':pages_info_user, 'User': user, 'Dict': dict}
 
     return render(request,'index.html',contexto)
 
