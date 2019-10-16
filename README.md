@@ -57,4 +57,8 @@
 #### Versión13 - V.07/10/2019:
 * Realización de una relación de las distintas motas que se ubican en la Clinica Fuenlabrada.
 * Se extraen las primeras instancias de la base de datos importante: 'clinica_fuenlabrada_1_medidas' y se consiguen generar JSON con los datos.
-* Se va a estudiar si el mejor método es el de crear un repositorio en local que permita un control de versiones o únicamente obtenerlos cada un cierto tiempo. 
+* Se va a estudiar si el mejor método es el de crear un repositorio en local que permita un control de versiones o únicamente obtenerlos cada un cierto tiempo.
+***
+#### Versión14 - V.16/10/2019:
+* Se añade una pantalla para visualizar la relación de motas en cada edificio.
+* Creación de funciones en 'views.py' para abstraer código. 
