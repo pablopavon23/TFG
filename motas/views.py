@@ -14,7 +14,7 @@ from .models import *
 # Importamos el lector de la SQL:
 # from .parser_SQL import executeScriptsFromFile
 # Importamos el archivo y función que reside en el mismo para cargar medidas:
-from .load_medidas import get_medidas, get_CF_info;
+from .load_medidas import get_medidas, get_CF_info, get_medidas_true;
 
 # Create your views here.
 
@@ -33,9 +33,9 @@ def users_pages(user):
 # y redirigiendo si es un POST
 @csrf_exempt
 def user_login(request):
-    print(request)
+    # print(request)
     # Para imprimir la url sobre la que se hace la peticion
-    print(request.path)
+    # print(request.path)
     # print(request.method)
     if request.method == 'POST':
         username = request.POST['username']
@@ -75,16 +75,16 @@ def register(request):
 def index(request, peticion):
     # Consigo el usuario que ha accedido al portal
     user = request.user
-    print("User is: "+str(user))
-
-    # Llamo a la funcion de test de acceso a sql
-    dict = get_CF_info()
+    # print("User is: "+str(user))
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
     pages_info_user = users_pages(str(user))
 
+    # Esto genera los JSON
+    test = get_medidas_true()
+
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user, 'User': user, 'Dict': dict}
+    contexto = {'Builds':pages_info_user, 'User': user}
 
     return render(request,'index.html',contexto)
 
@@ -150,11 +150,25 @@ def check_values(medidas_test):
 
 # ------------------------------------------------------------------------------
 
+def insert_idMota(medidas_test):
+    cant_motas = []   # Inicializo la lista donde guardare mota1, mota2...
+    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
+        id_mota = medidas.get("mota")  # esto me permite saber que id de mota tengo
+        print("Mota: "+str(id_mota)) #ASi obtengo la mota a la que pertenece
+        if not str(id_mota) in cant_motas:
+            cant_motas.append(str(id_mota))
+
+    cant_motas = sorted(cant_motas)
+
+    return cant_motas
+
+# ------------------------------------------------------------------------------
+
 @csrf_exempt
 def slices(request, peticion):
     # Consigo el usuario que ha accedido al portal
     user = request.user
-    print("User is: "+str(user))
+    # print("User is: "+str(user))
 
     # -------- Esto es para conseguir saber que slice me estan pidiendo ----
     url = request.path
@@ -177,17 +191,8 @@ def slices(request, peticion):
     # La funcion get_medidas me devuelve la lista con las medidas para un edificio concreto
 
 # --------- Copio tal cual de tables
-    cant_motas = []   # Inicializo la lista donde guardare mota1, mota2...
-    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
-        id_mota = medidas.get("mota")  # esto me permite saber que id de mota tengo
-        print("Mota: "+str(id_mota)) #ASi obtengo la mota a la que pertenece
-        if not str(id_mota) in cant_motas:
-            cant_motas.append(str(id_mota))
-
-    print("El numero de motas es: "+str(len(cant_motas)))
-    cant_motas = sorted(cant_motas)
-    print("Las motas despues son: "+str(cant_motas))    # Agrupamos los id_mota en orden ascendente
-    # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota
+    # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota --> ya hecho solo llamo a la funcion
+    cant_motas = insert_idMota(medidas_test)
 
     esTMP = False
     esHUM = False
@@ -224,7 +229,7 @@ def slices(request, peticion):
     meds = ['Temperatura','Humedad','CO2']
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user, 'Medidas': medidas_send, 'alerta':alerta, 'Edificio': nombre_ed, 'Id_motas': cant_motas, 'Tipos_med': meds, 'esTMP': esTMP, 'esHUM': esHUM, 'esCO': esCO}
+    contexto = {'Builds':pages_info_user, 'User': user,'Medidas': medidas_send, 'alerta':alerta, 'Edificio': nombre_ed, 'Id_motas': cant_motas, 'Tipos_med': meds, 'esTMP': esTMP, 'esHUM': esHUM, 'esCO': esCO}
 
     return render(request,'slices.html',contexto)
 
@@ -235,27 +240,20 @@ def tables(request, peticion):
     print(request)
     # Consigo el usuario que ha accedido al portal
     user = request.user
-    usuario = str(user)
-    print("User is: "+usuario)
+    # usuario = str(user)
+    # print("User is: "+usuario)
 
     # -------- Esto es para conseguir saber que tabla me estan pidiendo ----
     url = request.path
     url_tables = url.split('/')[2] # Obtengo tables_ED_70, tables_Clinica_Fuenlabrada y tables_Lece
     print("Solicitan la tabla: "+url_tables)
+
     medidas_test = get_medidas(url_tables) # medidas_test es la lista de diccionarios
 
     # Des de aquiiiiiiiiiii
-    cant_motas = []   # Inicializo la lista donde guardare mota1, mota2...
-    for medidas in medidas_test:    # medidas es cada uno de los diccionarios
-        id_mota = medidas.get("mota")  # esto me permite saber que id de mota tengo
-        print("Mota: "+str(id_mota)) #ASi obtengo la mota a la que pertenece
-        if not str(id_mota) in cant_motas:
-            cant_motas.append(str(id_mota))
+    # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota --> ya hecho solo llamo a la funcion
+    cant_motas = insert_idMota(medidas_test)
 
-    print("El numero de motas es: "+str(len(cant_motas)))
-    cant_motas = sorted(cant_motas)
-    print("Las motas despues son: "+str(cant_motas))    # Agrupamos los id_mota en orden ascendente
-    # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota
 
     if request.method == 'POST':
         print(request.POST['mota'])
@@ -274,7 +272,7 @@ def tables(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user, 'Medidas': medidas_send, 'Id_motas': cant_motas}
+    contexto = {'Builds':pages_info_user, 'User': user,'Medidas': medidas_send, 'Id_motas': cant_motas}
 
     return render(request,'tables.html',contexto)
 
@@ -334,3 +332,21 @@ def administration(request,peticion):
         redireccion = '/'+url_user+'/index'
 
     return redirect(redireccion)
+
+# ------------------------------------------------------------------------------
+
+def relations(request,peticion):
+    # Consigo el usuario que ha accedido al portal
+    user = request.user
+    print("User is: "+str(user))
+
+    # Llamo a la funcion de test de acceso a sql
+    dict = get_CF_info()
+
+    # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
+    pages_info_user = users_pages(str(user))
+
+    # Lo inroduzco como contexto para representarlo despues
+    contexto = {'Builds':pages_info_user, 'User': user, 'Dict': dict}
+
+    return render(request,'relations.html',contexto)
