@@ -178,6 +178,7 @@ def get_medidas_true():
         med_types = []
         for tipo in dicts['tipsen']:
             if not tipo.tipo_medida in med_types:
+                current_med = []    # me sirve para luego meter cada medida
                 tip_actual = tipo.tipo_medida
                 # print("El tipo ahora es: "+str(tip_actual))
                 med_types.append(tip_actual)
@@ -196,7 +197,11 @@ def get_medidas_true():
                 El object ese de lo unico que quiero de ahi es medida y hora.
                 ]
                 """
-                current_dic[tip_actual] = list(med_actual)    # Esto añade: 'HUMEDAD (%)':[15 objects])
+                # med_actual es una serie de QuerySet, debo acceder al campo medida de cada uno.
+                for medidas in med_actual:
+                    current_med.append(medidas.medida)
+
+                current_dic[tip_actual] = current_med    # Esto añade: 'HUMEDAD (%)':[15 objects])
 
         print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))
         # Añado ese diccionario a la lista
