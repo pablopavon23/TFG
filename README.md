@@ -61,4 +61,8 @@
 ***
 #### Versión14 - V.16/10/2019:
 * Se añade una pantalla para visualizar la relación de motas en cada edificio.
-* Creación de funciones en 'views.py' para abstraer código. 
+* Creación de funciones en 'views.py' para abstraer código.
+***
+#### Versión15 - V.20/10/2019:
+* Generación de los JSON correctamente.
+* Se introduce una lista de diccionarios del tipo {'id_mota':1,'planta':3,'sensores':2,'gps':[-3.78...,40.78...],'Tipo_medidaX':[medida1,medidaX...]} 
