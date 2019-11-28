@@ -7,6 +7,12 @@
 {% block content_index %}
   <div id="content-wrapper">
 
+    {% if alerta %}
+    <div class="alert alert-danger">
+      <strong>Atención!</strong> Alguna de las medidas indica un valor anómalo. Por favor revísalas.
+    </div>
+    {% endif %}
+
     <div class="container-fluid">
 
       <!-- Breadcrumbs-->
@@ -55,19 +61,23 @@
       <br>
 
 
+
       <!-- <div class="embed-container"> -->
       <div id="container">
         <script type="text/javascript">
           // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
           var elevationData =[];
+          var mota = {{ entry.id_mota }}
           {% for entry in Medidas %}
-            var mota = {{ entry.mota }}
+            var mota = {{ entry.id_mota }}
             {% if esTMP %}  // Si es temperatura accedo al campo temperatura
               var valor = '{value} ºC'
               var header_c = 'Temperatura: {point.y} ºC<br>'
               var medida_visualiz = 'Temperatura (ºC)'
               {% if entry.TMPaire %}  // Sólo si hay campo lo introduzco sino nada
-              elevationData.push([{{ entry.horajs }},{{ entry.TMPaire }}])
+                {% for tupla in entry.TMPaire %}
+                  elevationData.push([{{ tupla.1 }},{{ tupla.0 }}])
+                {% endfor %}
               {% endif %}
             {% endif %}
             {% if esHUM %}  // Si es humedad accedo al campo humedad
@@ -75,15 +85,19 @@
               var header_c = 'Humedad: {point.y} %<br>'
               var medida_visualiz = 'Humedad (%)'
               {% if entry.HUMEDAD %}  // Sólo si hay campo lo introduzco sino nada
-              elevationData.push([{{ entry.horajs }},{{ entry.HUMEDAD }}])
+                {% for tupla in entry.HUMEDAD %}
+                  elevationData.push([{{ tupla.1 }},{{ tupla.0 }}])
+                {% endfor %}
               {% endif %}
             {% endif %}
             {% if esCO %}  // Si es co2 accedo al campo co2
               var valor = '{value} ppp'
               var header_c = 'CO2: {point.y} ppp<br>'
-              var medida_visualiz = 'CO2 (ppp)'
+              var medida_visualiz = 'CO2 (ppm)'
               {% if entry.CO2 %}  // Sólo si hay campo lo introduzco sino nada
-              elevationData.push([{{ entry.horajs }},{{ entry.CO2 }}])
+                {% for tupla in entry.CO2 %}
+                  elevationData.push([{{ tupla.1 }},{{ tupla.0 }}])
+                {% endfor %}
               {% endif %}
             {% endif %}
           {% endfor %}
@@ -168,7 +182,7 @@
     <footer class="sticky-footer">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-          <span>Copyright © Your Website 2018</span>
+          <span>Copyright © URJC 2019</span>
         </div>
       </div>
     </footer>
