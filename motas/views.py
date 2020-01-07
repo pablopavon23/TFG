@@ -100,8 +100,7 @@ def check_medida(tipo,medidas_test):
     for medidas in medidas_test:    # medidas es cada uno de los diccionarios
         current = medidas.get(check_tipo)
         if (current != None):   # Si no tenemos medida no se añade
-            for tupla in current:
-                muestras.append(tupla[0])
+            muestras.append(medida)
 
     # Ordeno las muestras para que queden de min. valor a max. valor
     muestras = sorted(muestras)
@@ -180,6 +179,7 @@ def slices(request, peticion):
     # Consigo el usuario que ha accedido al portal
     user = request.user
     # Esto es para conseguir saber que slice me estan pidiendo
+    url = request.path
     url_slices = url.split('/')[2] # Obtengo slices_ED_70, slices_Clinica_Fuenlabrada y slices_Lece
 
     # Meto el nombre del edificio para personalizarlo más
@@ -235,7 +235,7 @@ def tables(request, peticion):
     # medidas_test = get_medidas(url_tables) # medidas_test es la lista de diccionarios
     # Consigo los datos:
     medidas_test = get_data()
-    
+
     # Des de aquiiiiiiiiiii
     # Hasta aquiiiiiii se podria exportar a una funcion introduce id_mota --> ya hecho solo llamo a la funcion
     cant_motas = insert_idMota(medidas_test)
