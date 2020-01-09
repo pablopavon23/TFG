@@ -64,7 +64,7 @@ def myconverter(o):
 def get_medidas_true():
     # Hago una query a la tabla de mi base de datos donde estan las medidas:
     # todas_medidas = ClinicaFuenlabrada1Medidas.objects.all() -- Cuidado porque esto podría estar ejecutandose la vida
-    ultimas_medidas = ClinicaFuenlabrada1Medidas.objects.all()[:10]
+    # ultimas_medidas = ClinicaFuenlabrada1Medidas.objects.all()[:10]
 
     # Llamo a la funcion que me carga la relacion de motas para saber que tipos de sensor tiene cada mota:
     motas_rel = get_CF_info()
@@ -84,47 +84,24 @@ def get_medidas_true():
         current_dic['planta'] = dicts['planta']
         current_dic['sensores'] = dicts['sensores']
         current_dic['gps'] = gps_mota(idm)
-        # print("Los diccionarios son: "+str(dicts))
-        med_types = []
-        for tipo in dicts['tipsen']:
-            if not tipo.tipo_medida in med_types:
-                current_med = []    # lista de medidas
-                current_hora = []   # lista de horas
-                print("El tipo es:"+str(tipo.tipo_medida))
-                tip_actual = tipo.tipo_medida
-                # print("El tipo ahora es: "+str(tip_actual))
-                med_types.append(tip_actual)
-                # Ahora ya obtengo para esa mota sus diferentes tipos de medidas
-                med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[:2]
-                # print("La medida actual es: "+str(med_actual))
-                """
-                Voy a hacer aqui la prueba de meterlo en el JSON:
-                Meto una entrada por cada medida, algo del estilo:
-                [
-                {'id_mota':1,'planta':3,'sensores':2,'gps':[-3.78...,40.78...],'HUMEDAD (%)':[65],'TMP-aire (c)': [27],'hora':16:16:00+00:00},
-                otro diccionario,
-                otro,
-                ...
-                Lo primero ya lo tengo arriba solo me queda 'HUMEDAD (%)':[15 objects],'TMP-aire (c)': [15 objects] o lo que sea
-                El object ese de lo unico que quiero de ahi es medida y hora.
-                ]
-                """
-                # med_actual es una serie de QuerySet, debo acceder al campo medida de cada uno.
-                # tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
-                for medidas in med_actual:
-                    current_med.append(medidas.medida)
-                    current_hora.append(medidas.hora)
-                    # current_dic[tip_actual_mapeado] = medidas.medida
-                    # current_dic['hora'] = medidas.hora
 
-                tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
-                i = 1
-                while i < len(current_med):
-                    current_dic[tip_actual_mapeado] = current_med[i]
-                    current_dic['hora'] = current_hora[i]
-                    # Añado ese diccionario a la lista
-                    medidas_definitivas.append(current_dic)
-                    i+=1
+        for tipo in dicts['tipsen']:
+            tip_actual = tipo.tipo_medida
+            med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[:1]
+            for medidas in med_actual:
+                current_dic[tip_actual] = medidas.medida
+                current_dic['hora'] = medidas.hora
+                print("Mota: "+str(idm)+", tipo: "+str(tip_actual)+", hora: "+str(medidas.hora))
+                medidas_definitivas.append(current_dic)
+
+        # tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
+        # i = 1
+        # while i < len(current_med):
+        #     current_dic[tip_actual_mapeado] = current_med[i]
+        #     current_dic['hora'] = current_hora[i]
+        #     # Añado ese diccionario a la lista
+        #     medidas_definitivas.append(current_dic)
+        #     i+=1
 
 
         # print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))

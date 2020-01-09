@@ -12,7 +12,7 @@ from django.contrib.auth import logout, authenticate, login
 # Importamos los modelos:
 from .models import *
 # Importamos el archivo y función que reside en el mismo para cargar medidas:
-from .load_medidas import get_medidas;
+# from .load_medidas import get_medidas;
 from .genera_medidas import get_CF_info, get_medidas_true;
 # Para trabajar con JSON:
 import json

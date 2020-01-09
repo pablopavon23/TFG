@@ -6,122 +6,6 @@ import os
 # Importamos los modelos:
 from .models import *
 
-# Para el caso del EDIFICIO70 del Ciemat y de la PSA(Plataforma Solar de Almeria) nos inventamos las medidas
-def get_medidas(edificio):
-    # medidas = [1,1,2,3] # Simple total
-    medidas = []    # Inicializo sino: UnboundLocalError: local variable 'medidas' referenced before assignment
-
-    medidas_ED_70 = [
-      {
-        "CO2": 553.628,
-        "TMPaire": 23.8965,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.7287271, 40.45471573],
-        "mota": 1,
-        "hora": time(10,30,0),  # Asigna 10h 30m 0s
-        "horajs": 10.30
-      },
-      {
-        "CO2": 575.542,
-        "TMPaire": 27.7478,
-        "HUMEDAD": 42.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72868991, 40.45471573],
-        "mota": 3,
-        "hora": time(11,30,0),
-        "horajs": 11.30
-      },
-      {
-        "CO2": 776.035,
-        "TMPaire": 23.3646,
-        "HUMEDAD": 35.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.728652, 40.45471954],
-        "mota": 2,
-        "hora": time(12,15,0),
-        "horajs": 12.15
-      },
-      {
-        "CO2": 462.749,
-        "TMPaire": 24.5945,
-        "HUMEDAD": 22.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.7286551, 40.45475006],
-        "mota": 1,
-        "hora": time(12,30,0),
-        "horajs": 12.30
-      },
-      {
-        "TMPsuperficie": 22.9343,
-        "HUMEDAD": 50.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72866201, 40.45479965],
-        "mota": 2,
-        "hora": time(13,00,0),
-        "horajs": 13.00
-      },
-      {
-        "CO2": 301.749,
-        "TMPaire": 20.5945,
-        "HUMEDAD": 65.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72861505, 40.45477676],
-        "mota": 1,
-        "hora": time(13,30,0),
-        "horajs": 13.30
-      },
-      {
-        "CO2": 462.749,
-        "TMPaire": 24.5945,
-        "HUMEDAD": 22.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72861695, 40.45475388],
-        "mota": 3,
-        "hora": time(15,00,0),
-        "horajs": 15.00
-      },
-      {
-        "CO2": 162.749,
-        "TMPaire": 35.5945,
-        "HUMEDAD": 75.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72861409, 40.45472336],
-        "mota": 2,
-        "hora": time(16,30,0),
-        "horajs": 16.30
-      },
-      {
-        "CO2": 575.542,
-        "TMPaire": 27.7478,
-        "HUMEDAD": 60.5998,
-        "ABIERTOCERRADO": 0,
-        'planta': 1,
-        "gps": [-3.72868991, 40.45471573],
-        "mota": 4,
-        "hora": time(18,00,0),
-        "horajs": 18.00
-      }
-    ]
-    medidas_Clinica_Fuenlabrada = 2
-    medidas_LECE = 3
-
-    if (edificio == "tables_ED_70") or (edificio == "slices_ED_70"):
-        medidas = medidas_ED_70
-    elif (edificio == "tables_Clinica_Fuenlabrada") or (edificio == "slices_Clinica_Fuenlabrada"):
-        medidas = medidas_Clinica_Fuenlabrada
-    elif (edificio == "tables_Lece") or (edificio == "slices_Lece"):
-        medidas = medidas_LECE
-
-    return medidas
-
 # ---------------------------------------------------------------------------------------------------------
 
 def get_CF_info():
@@ -140,7 +24,33 @@ def get_CF_info():
         dicts.append(dict)
         i += 1
 
+
+
     return dicts
+
+# ---------------------------------------------------------------------------------------------------------
+
+def get_CF_info_json():
+    # A modo de prueba saco la información
+    todas_motas = ClinicaFuenlabrada1Motas.objects.all()
+
+    i = 0
+    dicts = []
+    while i < len(todas_motas):
+        dict = {}
+        sensor_type = []
+        dict['id'] = todas_motas[i].id_mota
+        dict['planta'] = planta_mota(todas_motas[i].id_mota)
+        dict['sensores'] = todas_motas[i].num_sensores
+        lista_sensores = ClinicaFuenlabrada1Sensores.objects.filter(id_mota=todas_motas[i].id_mota) # Busco los sensores asociados a esa mota
+        for medida in lista_sensores:
+            sensor_type.append(medida.tipo_medida)
+        dict['tipsen'] = sensor_type
+        dicts.append(dict)
+        i += 1
+
+    # Hago el JSON que contiene los datos de medidas.
+    generate_json("relacion.json",dicts)
 
 # ---------------------------------------------------------------------------------------------------------
 
@@ -154,7 +64,7 @@ def myconverter(o):
 def get_medidas_true():
     # Hago una query a la tabla de mi base de datos donde estan las medidas:
     # todas_medidas = ClinicaFuenlabrada1Medidas.objects.all() -- Cuidado porque esto podría estar ejecutandose la vida
-    ultimas_medidas = ClinicaFuenlabrada1Medidas.objects.all()[:10]
+    # ultimas_medidas = ClinicaFuenlabrada1Medidas.objects.all()[:10]
 
     # Llamo a la funcion que me carga la relacion de motas para saber que tipos de sensor tiene cada mota:
     motas_rel = get_CF_info()
@@ -178,7 +88,9 @@ def get_medidas_true():
         med_types = []
         for tipo in dicts['tipsen']:
             if not tipo.tipo_medida in med_types:
-                current_med = []    # me sirve para luego meter cada medida
+                current_med = []    # lista de medidas
+                current_hora = []   # lista de horas
+                print("El tipo es:"+str(tipo.tipo_medida))
                 tip_actual = tipo.tipo_medida
                 # print("El tipo ahora es: "+str(tip_actual))
                 med_types.append(tip_actual)
@@ -187,9 +99,9 @@ def get_medidas_true():
                 # print("La medida actual es: "+str(med_actual))
                 """
                 Voy a hacer aqui la prueba de meterlo en el JSON:
-                Meto algo del estilo:
+                Meto una entrada por cada medida, algo del estilo:
                 [
-                {'id_mota':1,'planta':3,'sensores':2,'gps':[-3.78...,40.78...],'HUMEDAD (%)':[15 objects],'TMP-aire (c)': [15 objects]},
+                {'id_mota':1,'planta':3,'sensores':2,'gps':[-3.78...,40.78...],'HUMEDAD (%)':[65],'TMP-aire (c)': [27],'hora':16:16:00+00:00},
                 otro diccionario,
                 otro,
                 ...
@@ -198,39 +110,30 @@ def get_medidas_true():
                 ]
                 """
                 # med_actual es una serie de QuerySet, debo acceder al campo medida de cada uno.
+                # tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
                 for medidas in med_actual:
                     current_med.append(medidas.medida)
+                    current_hora.append(medidas.hora)
+                    # current_dic[tip_actual_mapeado] = medidas.medida
+                    # current_dic['hora'] = medidas.hora
 
-                current_dic[tip_actual] = current_med    # Esto añade: 'HUMEDAD (%)':[15 objects])
+                tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
+                i = 1
+                while i < len(current_med):
+                    current_dic[tip_actual_mapeado] = current_med[i]
+                    current_dic['hora'] = current_hora[i]
+                    # Añado ese diccionario a la lista
+                    medidas_definitivas.append(current_dic)
+                    i+=1
 
-        print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))
+
+        # print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))
         # Añado ese diccionario a la lista
-        medidas_definitivas.append(current_dic)
+        # medidas_definitivas.append(current_dic)
 
     # Hago el JSON que contiene los datos de medidas.
     generate_json("medidas.json",medidas_definitivas)
 
-
-    test = 1
-    # Ahora vamos a parsear la QuerySet e introducir la info en el JSON:
-    meds = []
-    for medida in ultimas_medidas:
-        med = {}
-        # print("Ahi va el idesensor: "+str(medida.id_sensor))
-        med['idsen'] = medida.id_sensor
-        # print("Ahí va la tipo de medida: "+str(medida.tipo_medida))
-        med['tipmed'] = medida.tipo_medida
-        med['idmota'] = medida.id_mota
-        med['med'] = medida.medida
-        # print("Ahi va la hora: "+str(medida.hora))  # Esto me imprime: 2018-05-08 15:18:00+00:00
-        # print("La hora de medida es: "+str(hora_medida))
-        med['hora'] = medida.hora
-        meds.append(med)
-
-    # Generamos el archivo JSON que contiene la información de la relacion de motas:
-    # generate_json("relacion.json",meds)
-
-    return test
 
 # ---------------------------------------------------------------------------------------------------------
 
@@ -305,3 +208,17 @@ def gps_mota(mota):
         gps = []
 
     return gps
+
+# ------------------------------------------------------------------------------------------------
+
+def map_tipo(tipo):
+    if tipo == 'TMP-aire (c)':
+        tipo_map = 'TMPaire'
+    elif tipo == 'HUMEDAD (%)':
+        tipo_map = 'HUMEDAD'
+    elif tipo == 'CO2 (ppp)':
+        tipo_map = 'CO2'
+    elif tipo == 'ABIERTO/CERRADO':
+        tipo_map = 'ABICER'
+
+    return tipo_map
