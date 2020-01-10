@@ -88,20 +88,13 @@ def get_medidas_true():
         for tipo in dicts['tipsen']:
             tip_actual = tipo.tipo_medida
             med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[:1]
+            # print("La QuerySet es: "+str(med_actual))
             for medidas in med_actual:
-                current_dic[tip_actual] = medidas.medida
-                current_dic['hora'] = medidas.hora
                 print("Mota: "+str(idm)+", tipo: "+str(tip_actual)+", hora: "+str(medidas.hora))
+                tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
+                current_dic[tip_actual_mapeado] = medidas.medida
+                current_dic['hora'] = medidas.hora
                 medidas_definitivas.append(current_dic)
-
-        # tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
-        # i = 1
-        # while i < len(current_med):
-        #     current_dic[tip_actual_mapeado] = current_med[i]
-        #     current_dic['hora'] = current_hora[i]
-        #     # Añado ese diccionario a la lista
-        #     medidas_definitivas.append(current_dic)
-        #     i+=1
 
 
         # print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))

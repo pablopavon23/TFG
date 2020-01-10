@@ -12,7 +12,6 @@ from django.contrib.auth import logout, authenticate, login
 # Importamos los modelos:
 from .models import *
 # Importamos el archivo y función que reside en el mismo para cargar medidas:
-# from .load_medidas import get_medidas;
 from .genera_medidas import get_CF_info, get_medidas_true;
 # Para trabajar con JSON:
 import json
@@ -100,7 +99,7 @@ def check_medida(tipo,medidas_test):
     for medidas in medidas_test:    # medidas es cada uno de los diccionarios
         current = medidas.get(check_tipo)
         if (current != None):   # Si no tenemos medida no se añade
-            muestras.append(medida)
+            muestras.append(current)
 
     # Ordeno las muestras para que queden de min. valor a max. valor
     muestras = sorted(muestras)
@@ -170,7 +169,7 @@ def procesolicitud(mota,medida,medidas_test):
         if str(medidas.get("id_mota")) == str(mota):    # comparo id como str sino no reconoce al ser str == int
             info_mota.append(medidas)
 
-    return info_mota
+    return info_mota, esTMP, esHUM, esCO
 
 # ------------------------------------------------------------------------------
 
@@ -181,6 +180,11 @@ def slices(request, peticion):
     # Esto es para conseguir saber que slice me estan pidiendo
     url = request.path
     url_slices = url.split('/')[2] # Obtengo slices_ED_70, slices_Clinica_Fuenlabrada y slices_Lece
+
+    # Inicializo para evitar error 
+    esTMP = False
+    esHUM = False
+    esCO = False
 
     # Meto el nombre del edificio para personalizarlo más
     if (url_slices == "slices_ED_70"):
@@ -199,7 +203,7 @@ def slices(request, peticion):
     if request.method == 'POST':
         mota_concreta = request.POST['mota']    # Averiguo sobre que mota en concreto solicitan info
         medida_concreta = request.POST['medidatipo']    # Averiguo sobre que medida en concreto solicitan info
-        medidas_send = procesolicitud(mota_concreta,medida_concreta,medidas_test)
+        medidas_send, esTMP, esHUM, esCO = procesolicitud(mota_concreta,medida_concreta,medidas_test)
     else:
         medidas_send = medidas_test # si es un GET mando todas las medidas tal cual las recibo de get_medidas()
 
