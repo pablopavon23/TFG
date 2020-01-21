@@ -181,7 +181,7 @@ def slices(request, peticion):
     url = request.path
     url_slices = url.split('/')[2] # Obtengo slices_ED_70, slices_Clinica_Fuenlabrada y slices_Lece
 
-    # Inicializo para evitar error 
+    # Inicializo para evitar error
     esTMP = False
     esHUM = False
     esCO = False
@@ -199,10 +199,13 @@ def slices(request, peticion):
 
     # Esto me permite mostrar el menú desplegable
     cant_motas = insert_idMota(medidas_test)
+    print("Número de motas es: "+str(cant_motas))
 
     if request.method == 'POST':
         mota_concreta = request.POST['mota']    # Averiguo sobre que mota en concreto solicitan info
+        print("Solicitan mota: "+str(mota_concreta))
         medida_concreta = request.POST['medidatipo']    # Averiguo sobre que medida en concreto solicitan info
+        print("Solicitan medida: "+str(medida_concreta))
         medidas_send, esTMP, esHUM, esCO = procesolicitud(mota_concreta,medida_concreta,medidas_test)
     else:
         medidas_send = medidas_test # si es un GET mando todas las medidas tal cual las recibo de get_medidas()

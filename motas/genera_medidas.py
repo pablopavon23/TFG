@@ -97,10 +97,6 @@ def get_medidas_true():
                 medidas_definitivas.append(current_dic)
 
 
-        # print("LA MOTA "+str(idm)+" :TIENES: "+str(med_types))
-        # Añado ese diccionario a la lista
-        # medidas_definitivas.append(current_dic)
-
     # Hago el JSON que contiene los datos de medidas.
     generate_json("medidas.json",medidas_definitivas)
 
