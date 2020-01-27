@@ -85,8 +85,8 @@ def get_medidas_true():
         current_dic['sensores'] = dicts['sensores']
         current_dic['gps'] = gps_mota(idm)
 
-        for tipo in dicts['tipsen']:
-            tip_actual = tipo.tipo_medida
+        for tipos in dicts['tipsen']:
+            tip_actual = tipos.tipo_medida
             med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[:1]
             # print("La QuerySet es: "+str(med_actual))
             for medidas in med_actual:
@@ -94,7 +94,8 @@ def get_medidas_true():
                 tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
                 current_dic[tip_actual_mapeado] = medidas.medida
                 current_dic['hora'] = medidas.hora
-                medidas_definitivas.append(current_dic)
+
+            medidas_definitivas.append(current_dic)
 
 
     # Hago el JSON que contiene los datos de medidas.

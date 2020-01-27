@@ -11,11 +11,15 @@ from django.template.context_processors import csrf
 from django.contrib.auth import logout, authenticate, login
 # Importamos los modelos:
 from .models import *
+# Importamos las características:
+from django.conf import settings
 # Importamos el archivo y función que reside en el mismo para cargar medidas:
 from .genera_medidas import get_CF_info, get_medidas_true;
 # Para trabajar con JSON:
 import json
 import os
+# PAra el mail:
+from .test_mail import test_send_mail;
 
 # Create your views here.
 
@@ -34,6 +38,8 @@ def users_pages(user):
 # y redirigiendo si es un POST
 @csrf_exempt
 def user_login(request):
+
+    # test_send_mail()
 
     # Proceso la solicitud
     if request.method == 'POST':
@@ -96,10 +102,19 @@ def check_medida(tipo,medidas_test):
     # Comprobamos cada medida:
     muestras = []
     current = []
+    motas_alerta = []
+    cuerpo_mail = ''
     for medidas in medidas_test:    # medidas es cada uno de los diccionarios
         current = medidas.get(check_tipo)
         if (current != None):   # Si no tenemos medida no se añade
             muestras.append(current)
+            alert = alert_type(check_tipo,current)
+            if alert:   # si hay alerta es que hay valor anomalo
+                mota = medidas.get('id_mota')  # cojo la mota (para enviar el correo)
+                if not str(mota) in motas_alerta:  # asi me aseguro no guardar dos veces la misma mota.
+                    motas_alerta.append(str(mota))   # añado la mota a la lista que enviar al correo
+                    cuerpo_mail += "Valor anómalo recogido para mota "+str(mota)+"\n"
+
 
     # Ordeno las muestras para que queden de min. valor a max. valor
     muestras = sorted(muestras)
@@ -109,22 +124,43 @@ def check_medida(tipo,medidas_test):
     else:
         alertar = False
 
-    return alertar
+    return alertar, motas_alerta, cuerpo_mail
 
+# ------------------------------------------------------------------------------
+# Funcion que recibe una medida y según el tipo que sea alerta si hay valor anomalo o no.
+# Los valores límite los saco de la memoria (sección 5.6)
+def alert_type(type,medida):
+    if type == 'TMPaire':
+        if (medida < 0.0) or (medida > 70.0):
+            alert_or_not = True
+        else:
+            alert_or_not = False
+    elif type == 'CO2':
+        if (medida < 100.0) or (medida > 800.0):
+            alert_or_not = True
+        else:
+            alert_or_not = False
+    elif type == 'HUMEDAD':
+        if (medida < 0.0) or (medida > 100.0):
+            alert_or_not = True
+        else:
+            alert_or_not = False
+
+    return alert_or_not
 # ------------------------------------------------------------------------------
 #     """ La función aqui es devolver si hay que alertar o no"""
 def check_values(medidas_test):
     # Invoco a la funcion que me indica si una medida cualquiera contiene valor anomalo o no
-    alertar_TMP = check_medida('temperatura',medidas_test)
-    alertar_CO = check_medida('dioxido',medidas_test)
-    alertar_HU = check_medida('humedad',medidas_test)
+    alertar_TMP,motas_alerta,cuerpo_mail = check_medida('temperatura',medidas_test)
+    alertar_CO,motas_alerta,cuerpo_mail = check_medida('dioxido',medidas_test)
+    alertar_HU,motas_alerta,cuerpo_mail = check_medida('humedad',medidas_test)
 
     if (not alertar_TMP) and (not alertar_CO) and (not alertar_HU):
         alertar = False
     else:
         alertar = True
 
-    return alertar
+    return alertar,motas_alerta,cuerpo_mail
 
 # ------------------------------------------------------------------------------
 
@@ -214,7 +250,9 @@ def slices(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Llamo a la funcion que me indica si hay alerta de valores anomalos o no:
-    alerta = check_values(medidas_test)
+    alerta,motas_alerta,cuerpo_mail = check_values(medidas_test)
+    print("Enviaría por correo valores anomalos en: "+str(motas_alerta))
+    print("BODY MAIL :"+cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores.")
 
     # Tipos de medidas a elegir:
     meds = ['Temperatura','Humedad','CO2']
