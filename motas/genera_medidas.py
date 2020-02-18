@@ -76,31 +76,39 @@ def get_medidas_true():
         - id_mota, que la iré cogiendo de motas_rel con un bucle
         - tipo_medida, que tendré que conseguir buscando para una id_mota en motas_rel los tipos de medidas que tiene
     """
+    medidas_por_tipo = 3
     medidas_definitivas = []
     for dicts in motas_rel:
         for tipos in dicts['tipsen']:
-            idm = dicts['id']
-            current_dic = {} # aqui guardo el diccionario acutal que luego inserto en la lista
-            current_dic['id_mota'] = idm    # tambien me valdria dicts['id']
-            current_dic['planta'] = dicts['planta']
-            current_dic['sensores'] = dicts['sensores']
-            current_dic['gps'] = gps_mota(idm)
+            i = 0
+            while i < medidas_por_tipo:
+                idm = dicts['id']
+                current_dic = {} # aqui guardo el diccionario acutal que luego inserto en la lista
+                current_dic['id_mota'] = idm    # tambien me valdria dicts['id']
+                current_dic['planta'] = dicts['planta']
+                current_dic['sensores'] = dicts['sensores']
+                current_dic['gps'] = gps_mota(idm)
 
-            tip_actual = tipos.tipo_medida
-            med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[:1]
-            for medidas in med_actual:
-                # print("Mota: "+str(idm)+", tipo: "+str(tip_actual)+", hora: "+str(medidas.hora))
-                tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
-                current_dic[tip_actual_mapeado] = medidas.medida
-                current_dic['hora'] = medidas.hora
-                """
-                Como en JavaScript no me lee bien los formatos debo separar aquí fecha y hora:
-                fecha_hora = medidas.hora   # esto tiene formato: 2018-10-16 16:16:00+00:00
-                
-                current_dic['fecha'] = fecha_es
-                current_dic['hora'] = hora_es
-                """
-                medidas_definitivas.append(current_dic)
+                tip_actual = tipos.tipo_medida
+                med_actual = ClinicaFuenlabrada1Medidas.objects.filter(id_mota=idm).filter(tipo_medida=tip_actual).order_by('hora')[i:i+1]
+                i += 1
+                for medidas in med_actual:
+                    # print("Mota: "+str(idm)+", tipo: "+str(tip_actual)+", hora: "+str(medidas.hora))
+                    tip_actual_mapeado = map_tipo(tip_actual)   # Necesario para acceder luego en el template
+                    current_dic[tip_actual_mapeado] = medidas.medida
+                    # current_dic['hora'] = medidas.hora
+                    """
+                    Como en JavaScript no me lee bien los formatos debo separar aquí fecha y hora:
+                    fecha_hora = medidas.hora   # esto tiene formato: 2018-10-16 16:16:00+00:00
+                    fecha_es = fecha_hora.strftime("%d/%m/%Y")
+                    hora_es = fecha_hora.strftime("%H:%M:%S")
+                    current_dic['fecha'] = fecha_es
+                    current_dic['hora'] = hora_es
+                    """
+                    fecha_hora = medidas.hora   # esto tiene formato: 2018-10-16 16:16:00+00:00
+                    hora_es = fecha_hora.strftime("%m/%d/%Y,%H:%M:%S")
+                    current_dic['hora'] = hora_es
+                    medidas_definitivas.append(current_dic)
 
 
     # Hago el JSON que contiene los datos de medidas.

@@ -69,7 +69,14 @@
             var header_c = 'Temperatura: {point.y} ºC<br>'
             var medida_visualiz = 'Temperatura (ºC)'
             {% if entry.TMPaire %}  // Sólo si hay campo lo introduzco sino nada
-			        elevationData.push([{{ entry.hora|date:'h:i:sa' }},{{ entry.TMPaire }}])
+              console.log('La fecha es: {{ entry.hora }}')
+              var msec = Date.parse('{{ entry.hora }}')
+              var d = new Date(msec)
+              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+              // Tengo que poner el +1 porque me coge mal el mes.
+              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+              console.log('La fecha despues es: '+d)
+			        elevationData.push([valid_date,{{ entry.TMPaire }}])
             {% endif %}
           {% endif %}
           {% if esHUM %}  // Si es humedad accedo al campo humedad
@@ -77,7 +84,14 @@
             var header_c = 'Humedad: {point.y} %<br>'
             var medida_visualiz = 'Humedad (%)'
             {% if entry.HUMEDAD %}  // Sólo si hay campo lo introduzco sino nada
-			        elevationData.push([{{ entry.hora|date:'Y-m-d H:i' }},{{ entry.HUMEDAD }}])
+              console.log('La fecha es: {{ entry.hora }}')
+              var msec = Date.parse('{{ entry.hora }}')
+              var d = new Date(msec)
+              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+              // Tengo que poner el +1 porque me coge mal el mes.
+              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+              console.log('La fecha despues es: '+d)
+			        elevationData.push([valid_date,{{ entry.HUMEDAD }}])
             {% endif %}
           {% endif %}
           {% if esCO %}  // Si es co2 accedo al campo co2
@@ -85,7 +99,14 @@
             var header_c = 'CO2: {point.y} ppp<br>'
             var medida_visualiz = 'CO2 (ppm)'
             {% if entry.CO2 %}  // Sólo si hay campo lo introduzco sino nada
-              elevationData.push([{{ entry.hora|date:'Y-m-d H:i' }},{{ entry.CO2 }}])
+              console.log('La fecha es: {{ entry.hora }}')
+              var msec = Date.parse('{{ entry.hora }}')
+              var d = new Date(msec)
+              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+              // Tengo que poner el +1 porque me coge mal el mes.
+              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+              console.log('La fecha despues es: '+d)
+              elevationData.push([valid_date,{{ entry.CO2 }}])
             {% endif %}
           {% endif %}
         {% endfor %}
@@ -112,13 +133,14 @@
         },
 
         xAxis: {
-        	labels: {
-        		format: '{value} h'
-        	},
-            // minRange: 24,
-            title: {
+          type: 'datetime',
+        	// labels: {
+        	// 	format: '{value} h'
+        	// },
+          // minRange: 24,
+          title: {
         		text: 'Hora'
-            }
+          },
         },
 
         yAxis: {
@@ -135,7 +157,7 @@
 
         tooltip: {
         	headerFormat: header_c,
-        	pointFormat: 'Hora: {point.x} h',
+        	pointFormat: footer_c,
             shared: true
         },
 
@@ -184,5 +206,7 @@
   {% load static %}
   <!-- JavaScript to represent graphics with Highcharts -->
   <!-- <script src="{% static 'js/highcharts/highcharts_slices.js' %}"></script> -->
+  <!-- JavaScript to format datetime in Highcharts -->
+  <script src="{% static 'js/highcharts/format_date.js' %}"></script>
 
 {% endblock %}
