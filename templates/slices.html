@@ -60,124 +60,129 @@
       <!-- <div class="embed-container"> -->
       <div id="container">
         <script type="text/javascript">
-        // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
-        var elevationData =[];
-        {% for entry in Medidas %}
-          var mota = {{ entry.id_mota }}
-          {% if esTMP %}  // Si es temperatura accedo al campo temperatura
-		        var valor = '{value} ºC'
-            var header_c = 'Temperatura: {point.y} ºC<br>'
-            var medida_visualiz = 'Temperatura (ºC)'
-            {% if entry.TMPaire %}  // Sólo si hay campo lo introduzco sino nada
-              console.log('La fecha es: {{ entry.hora }}')
-              var msec = Date.parse('{{ entry.hora }}')
-              var d = new Date(msec)
-              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
-              // Tengo que poner el +1 porque me coge mal el mes.
-              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
-              console.log('La fecha despues es: '+d)
-			        elevationData.push([valid_date,{{ entry.TMPaire }}])
+          // var Medidas = json_parse({{ Medidas|escapejs }});
+          // var esTMP = {{esTMP}};
+          // var esHUM = {{esHUM}};
+          // var esCO = {{esCO}};
+          // var Edificio = {{Edificio}};
+          // Data generated from http://www.bikeforums.net/professional-cycling-fans/1113087-2017-tour-de-france-gpx-tcx-files.html
+          var elevationData =[];
+          {% for entry in Medidas %}
+            var mota = {{ entry.id_mota }}
+            {% if esTMP %}  // Si es temperatura accedo al campo temperatura
+              var valor = '{value} ºC'
+              var header_c = 'Temperatura: {point.y} ºC<br>'
+              var medida_visualiz = 'Temperatura (ºC)'
+              {% if entry.TMPaire %}  // Sólo si hay campo lo introduzco sino nada
+                console.log('La fecha es: {{ entry.hora }}')
+                var msec = Date.parse('{{ entry.hora }}')
+                var d = new Date(msec)
+                var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+                // Tengo que poner el +1 porque me coge mal el mes.
+                var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+                console.log('La fecha despues es: '+d)
+                elevationData.push([valid_date,{{ entry.TMPaire }}])
+              {% endif %}
             {% endif %}
-          {% endif %}
-          {% if esHUM %}  // Si es humedad accedo al campo humedad
-            var valor = '{value} %'
-            var header_c = 'Humedad: {point.y} %<br>'
-            var medida_visualiz = 'Humedad (%)'
-            {% if entry.HUMEDAD %}  // Sólo si hay campo lo introduzco sino nada
-              console.log('La fecha es: {{ entry.hora }}')
-              var msec = Date.parse('{{ entry.hora }}')
-              var d = new Date(msec)
-              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
-              // Tengo que poner el +1 porque me coge mal el mes.
-              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
-              console.log('La fecha despues es: '+d)
-			        elevationData.push([valid_date,{{ entry.HUMEDAD }}])
+            {% if esHUM %}  // Si es humedad accedo al campo humedad
+              var valor = '{value} %'
+              var header_c = 'Humedad: {point.y} %<br>'
+              var medida_visualiz = 'Humedad (%)'
+              {% if entry.HUMEDAD %}  // Sólo si hay campo lo introduzco sino nada
+                console.log('La fecha es: {{ entry.hora }}')
+                var msec = Date.parse('{{ entry.hora }}')
+                var d = new Date(msec)
+                var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+                // Tengo que poner el +1 porque me coge mal el mes.
+                var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+                console.log('La fecha despues es: '+d)
+                elevationData.push([valid_date,{{ entry.HUMEDAD }}])
+              {% endif %}
             {% endif %}
-          {% endif %}
-          {% if esCO %}  // Si es co2 accedo al campo co2
-		        var valor = '{value} ppp'
-            var header_c = 'CO2: {point.y} ppp<br>'
-            var medida_visualiz = 'CO2 (ppm)'
-            {% if entry.CO2 %}  // Sólo si hay campo lo introduzco sino nada
-              console.log('La fecha es: {{ entry.hora }}')
-              var msec = Date.parse('{{ entry.hora }}')
-              var d = new Date(msec)
-              var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
-              // Tengo que poner el +1 porque me coge mal el mes.
-              var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
-              console.log('La fecha despues es: '+d)
-              elevationData.push([valid_date,{{ entry.CO2 }}])
+            {% if esCO %}  // Si es co2 accedo al campo co2
+              var valor = '{value} ppp'
+              var header_c = 'CO2: {point.y} ppp<br>'
+              var medida_visualiz = 'CO2 (ppm)'
+              {% if entry.CO2 %}  // Sólo si hay campo lo introduzco sino nada
+                console.log('La fecha es: {{ entry.hora }}')
+                var msec = Date.parse('{{ entry.hora }}')
+                var d = new Date(msec)
+                var valid_date = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())
+                // Tengo que poner el +1 porque me coge mal el mes.
+                var footer_c = 'Fecha: '+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+                console.log('La fecha despues es: '+d)
+                elevationData.push([valid_date,{{ entry.CO2 }}])
+              {% endif %}
             {% endif %}
-          {% endif %}
-        {% endfor %}
+          {% endfor %}
 
-        // Now create the chart
-        Highcharts.chart('container', {
+          // Now create the chart
+          Highcharts.chart('container', {
 
-        chart: {
-        	type: 'area',
-            zoomType: 'x',
-            panning: true,
-            panKey: 'shift',
-            scrollablePlotArea: {
-        		minWidth: 600
-        	}
-        },
-
-        title: {
-        	text: 'Tablas de medidas en el edificio {{Edificio}}'
-        },
-
-        subtitle: {
-        	text: 'Está viendo la mota '+mota+' , medida '+medida_visualiz+'<br>'
-        },
-
-        xAxis: {
-          type: 'datetime',
-        	// labels: {
-        	// 	format: '{value} h'
-        	// },
-          // minRange: 24,
-          title: {
-        		text: 'Hora'
+          chart: {
+            type: 'area',
+              zoomType: 'x',
+              panning: true,
+              panKey: 'shift',
+              scrollablePlotArea: {
+              minWidth: 600
+            }
           },
-        },
 
-        yAxis: {
-        	startOnTick: true,
-            endOnTick: false,
-            maxPadding: 0.35,
+          title: {
+            text: 'Tablas de medidas en el edificio {{Edificio}}'
+          },
+
+          subtitle: {
+            text: 'Está viendo la mota '+mota+' , medida '+medida_visualiz+'<br>'
+          },
+
+          xAxis: {
+            type: 'datetime',
+            // labels: {
+            // 	format: '{value} h'
+            // },
+            // minRange: 24,
             title: {
-        		text: null
-        	},
-            labels: {
-        		format: valor
-        	}
-        },
+              text: 'Hora'
+            },
+          },
 
-        tooltip: {
-        	headerFormat: header_c,
-        	pointFormat: footer_c,
-            shared: true
-        },
+          yAxis: {
+            startOnTick: true,
+              endOnTick: false,
+              maxPadding: 0.35,
+              title: {
+              text: null
+            },
+              labels: {
+              format: valor
+            }
+          },
 
-        legend: {
-        	enabled: false
-        },
+          tooltip: {
+            headerFormat: header_c,
+            pointFormat: footer_c,
+              shared: true
+          },
 
-        series: [{
-        	data: elevationData,
-            lineColor: Highcharts.getOptions().colors[1],
-            color: Highcharts.getOptions().colors[2],
-            fillOpacity: 0.5,
-            name: 'Elevation',
-            marker: {
-        		enabled: false
-        	},
-            threshold: null
-        }]
+          legend: {
+            enabled: false
+          },
 
-        });
+          series: [{
+            data: elevationData,
+              lineColor: Highcharts.getOptions().colors[1],
+              color: Highcharts.getOptions().colors[2],
+              fillOpacity: 0.5,
+              name: 'Elevation',
+              marker: {
+              enabled: false
+            },
+              threshold: null
+          }]
+
+          });
 
         </script>
 

@@ -321,6 +321,8 @@ def leaflet(request, peticion):
     contexto = {'URL':url_leaflet}
     leaf_plantilla = url_leaflet+'.html'
     # ---------------------------------------------------------------------------------------
+    # Consigo los datos:
+    medidas_test = get_data()
 
     # Consigo el usuario que ha accedido al portal
     user = request.user
@@ -330,7 +332,7 @@ def leaflet(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Lo inroduzco como contexto para representarlo despues
-    contexto = {'Builds':pages_info_user}
+    contexto = {'Builds':pages_info_user,'Medidas':medidas_test}
 
     return render(request,leaf_plantilla,contexto)
 

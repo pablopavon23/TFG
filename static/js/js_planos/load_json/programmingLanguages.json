@@ -1,0 +1,41 @@
+{
+    "programming_languages" : [
+        {
+            "name" : "JAVA",
+            "designed_by" : "James Gosling",
+            "latest_release" : "JAVA 10",
+
+            "paradigm" : {
+                "object_oriented" : true
+            },
+            "description" : [ {
+                "description_data" : "Java is a general-purpose computer-programming language that is concurrent, class-based, object-oriented, and specifically designed to have as few implementation dependencies as possible."
+            } ]
+        },
+        {
+            "name" : "C++",
+            "designed_by" : "Bjarne Stroustrup",
+            "latest_release" : "ISO/IEC 14882:2017",
+
+            "paradigm" : {
+                "object_oriented" : true
+            },
+            "description" : [ {
+                "description_data" : "C++ is a general-purpose programming language. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation."
+            } ]
+        },
+        {
+            "name" : "C",
+            "designed_by" : "Dennis Ritchie",
+            "latest_release" : "C18 / June 2018",
+
+            "paradigm" : {
+                "object_oriented" : false
+            },
+            "description" : [ {
+                "description_data" : "C is a general-purpose, imperative computer programming language, supporting structured programming, lexical variable scope and recursion, while a static type system prevents many unintended operations."
+            } ]
+        }
+
+    ]
+}
