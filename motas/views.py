@@ -81,7 +81,7 @@ def index(request, peticion):
     pages_info_user = users_pages(str(user))
 
     # Esto genera los JSON
-    get_medidas_true()
+    # get_medidas_true()
 
     # Lo inroduzco como contexto para representarlo despues
     contexto = {'Builds':pages_info_user, 'User': user}
@@ -111,9 +111,10 @@ def check_medida(tipo,medidas_test):
             alert = alert_type(check_tipo,current)
             if alert:   # si hay alerta es que hay valor anomalo
                 mota = medidas.get('id_mota')  # cojo la mota (para enviar el correo)
+                planta = medidas.get('planta') # cojo la planta (para enviar el correo)
                 if not str(mota) in motas_alerta:  # asi me aseguro no guardar dos veces la misma mota.
                     motas_alerta.append(str(mota))   # añado la mota a la lista que enviar al correo
-                    cuerpo_mail += "Valor anómalo recogido para mota "+str(mota)+"\n"
+                    cuerpo_mail += "Valor anómalo recogido para mota "+str(mota)+", ubicada en la planta: "+str(planta)+"\n"
 
 
     # Ordeno las muestras para que queden de min. valor a max. valor
@@ -237,6 +238,8 @@ def slices(request, peticion):
     cant_motas = insert_idMota(medidas_test)
     print("Número de motas es: "+str(cant_motas))
 
+    alerta = False
+
     if request.method == 'POST':
         mota_concreta = request.POST['mota']    # Averiguo sobre que mota en concreto solicitan info
         print("Solicitan mota: "+str(mota_concreta))
@@ -245,14 +248,15 @@ def slices(request, peticion):
         medidas_send, esTMP, esHUM, esCO = procesolicitud(mota_concreta,medida_concreta,medidas_test)
     else:
         medidas_send = medidas_test # si es un GET mando todas las medidas tal cual las recibo de get_medidas()
+        # Llamo a la funcion que me indica si hay alerta de valores anomalos o no:
+        alerta,motas_alerta,cuerpo_mail = check_values(medidas_test)
+        print("Enviaría por correo valores anomalos en: "+str(motas_alerta))
+        print("BODY MAIL :"+cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores.")
+        admin_mail = cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores."
+        test_send_mail(admin_mail)
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
     pages_info_user = users_pages(str(user))
-
-    # Llamo a la funcion que me indica si hay alerta de valores anomalos o no:
-    alerta,motas_alerta,cuerpo_mail = check_values(medidas_test)
-    print("Enviaría por correo valores anomalos en: "+str(motas_alerta))
-    print("BODY MAIL :"+cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores.")
 
     # Tipos de medidas a elegir:
     meds = ['Temperatura','Humedad','CO2']
