@@ -32,14 +32,17 @@
       <p class="small text-center text-muted my-5">
         <em>More chart examples coming soon...</em>
         <script type="text/javascript">
-          // var medidas_db_test = JSON.parse('{{ Medidas }}')
-          //
-          // if (medidas_db_test) {
-          //   console.log("Positivo")
-          // } else {
-          //   console.log("Negativo")
-          // }
           console.log("entra")
+          // var medidas = unescape('{{ Medidas }}')
+          // if (medidas) {
+          //   console.log("cargadas")
+          // } else {
+          //   console.log("no cargadas")
+          // }
+          {% for entry in Medidas %}
+            var motassss = {{ entry.id_mota }}
+            console.log(motassss)
+          {% endfor %}
         </script>
       </p>
 
