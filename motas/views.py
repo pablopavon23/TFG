@@ -19,7 +19,7 @@ from .genera_medidas import get_CF_info, get_medidas_true;
 import json
 import os
 # PAra el mail:
-from .test_mail import test_send_mail;
+from .test_mail import send_mail;
 
 # Create your views here.
 
@@ -39,7 +39,7 @@ def users_pages(user):
 @csrf_exempt
 def user_login(request):
 
-    # test_send_mail()
+    # send_mail()
 
     # Proceso la solicitud
     if request.method == 'POST':
@@ -100,32 +100,25 @@ def check_medida(tipo,medidas_test):
         check_tipo = "HUMEDAD"
 
     # Comprobamos cada medida:
-    muestras = []
-    current = []
     motas_alerta = []
-    cuerpo_mail = ''
+    planta_alerta = []
+    hora_alerta = []
+    tipo_alerta = []
+
     for medidas in medidas_test:    # medidas es cada uno de los diccionarios
         current = medidas.get(check_tipo)
         if (current != None):   # Si no tenemos medida no se añade
-            muestras.append(current)
             alert = alert_type(check_tipo,current)
             if alert:   # si hay alerta es que hay valor anomalo
+                alertar = True
                 mota = medidas.get('id_mota')  # cojo la mota (para enviar el correo)
-                planta = medidas.get('planta') # cojo la planta (para enviar el correo)
                 if not str(mota) in motas_alerta:  # asi me aseguro no guardar dos veces la misma mota.
                     motas_alerta.append(str(mota))   # añado la mota a la lista que enviar al correo
-                    cuerpo_mail += "Valor anómalo recogido para mota "+str(mota)+", ubicada en la planta: "+str(planta)+"\n"
+                    planta_alerta.append(medidas.get('planta'))
+                    hora_alerta.append(medidas.get('hora'))
+                    tipo_alerta.append(check_tipo)
 
-
-    # Ordeno las muestras para que queden de min. valor a max. valor
-    muestras = sorted(muestras)
-    # Compruebo si hay (o no) alerta
-    if (muestras[0] < 0.0) or (muestras[len(muestras)-1] > 50.0):
-        alertar = True
-    else:
-        alertar = False
-
-    return alertar, motas_alerta, cuerpo_mail
+    return alertar, motas_alerta, planta_alerta, tipo_alerta, hora_alerta
 
 # ------------------------------------------------------------------------------
 # Funcion que recibe una medida y según el tipo que sea alerta si hay valor anomalo o no.
@@ -152,9 +145,18 @@ def alert_type(type,medida):
 #     """ La función aqui es devolver si hay que alertar o no"""
 def check_values(medidas_test):
     # Invoco a la funcion que me indica si una medida cualquiera contiene valor anomalo o no
-    alertar_TMP,motas_alerta,cuerpo_mail = check_medida('temperatura',medidas_test)
-    alertar_CO,motas_alerta,cuerpo_mail = check_medida('dioxido',medidas_test)
-    alertar_HU,motas_alerta,cuerpo_mail = check_medida('humedad',medidas_test)
+    alertar_TMP,motas_alerta_t,planta_alerta_t,tipo_alerta_t,hora_alerta_t = check_medida('temperatura',medidas_test)
+    alertar_CO,motas_alerta_d,planta_alerta_d,tipo_alerta_d,hora_alerta_d = check_medida('dioxido',medidas_test)
+    alertar_HU,motas_alerta_h,planta_alerta_h,tipo_alerta_h,hora_alerta_h = check_medida('humedad',medidas_test)
+
+    motas_alerta = motas_alerta_t+motas_alerta_d+motas_alerta_h
+    planta_alerta = planta_alerta_t+planta_alerta_d+planta_alerta_h
+    tipo_alerta = tipo_alerta_t+tipo_alerta_d+tipo_alerta_h
+    hora_alerta = hora_alerta_t+hora_alerta_d+hora_alerta_h
+
+    cuerpo_mail = ''
+    for x in range(0,len(motas_alerta)):
+        cuerpo_mail += "Valor anómalo recogido para mota "+str(motas_alerta[x])+", ubicada en la planta: "+str(planta_alerta[x])+", sensor que mide: "+tipo_alerta[x]+". Medida tomada a las: "+str(hora_alerta[x])+"\n"
 
     if (not alertar_TMP) and (not alertar_CO) and (not alertar_HU):
         alertar = False
@@ -251,9 +253,9 @@ def slices(request, peticion):
         # Llamo a la funcion que me indica si hay alerta de valores anomalos o no:
         alerta,motas_alerta,cuerpo_mail = check_values(medidas_test)
         print("Enviaría por correo valores anomalos en: "+str(motas_alerta))
-        print("BODY MAIL :"+cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores.")
         admin_mail = cuerpo_mail+"Por favor, como administrador del sistema, revise estos valores."
-        test_send_mail(admin_mail)
+        # send_mail(admin_mail)
+        print(admin_mail)
 
     # Llamo a la función que me dirá a que edificios tiene acceso ese usuario
     pages_info_user = users_pages(str(user))
